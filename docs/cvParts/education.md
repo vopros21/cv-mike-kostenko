@@ -1,5 +1,3 @@
-## Education
-
 **GitHub Actions** - [Microsoft Learning](https://learn.microsoft.com/en-us/collections/n5p4a5z7keznp5)
 
 **GitHub Foundations** - [Microsoft Learning](https://learn.microsoft.com/en-us/collections/o1njfe825p602p)
