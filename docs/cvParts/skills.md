@@ -1,7 +1,7 @@
 ```swift
 switch Skills {
     case Core Languages:
-        print("Java, Swift, Python")
+        print("Java, Swift, Python, Bash")
     case Tools:
         print("Maven, Gradle, Git, JIRA, Intellij IDEA, Xcode, VSCode")
     case Database Systems:
@@ -9,7 +9,7 @@ switch Skills {
     case Testing:
         print("JUnit, Mockito")
     case Frameworks:
-        print("Spring, Spring Boot, SwiftUI")
+        print("Swing, Spring, Spring Boot, SwiftUI")
     default:
         print("Learning...")
 }
