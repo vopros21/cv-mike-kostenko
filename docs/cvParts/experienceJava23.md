@@ -5,11 +5,9 @@ Participating in the development and maintenance of several key enterprise appli
 - Key Responsibilities:
     - Developed and maintained Java-based components for various applications, prioritizing performance and responsiveness.
     - Interpreted application storyboards and use cases into functional features, working in collaboration with cross-functional teams.
-    - Implemented relational database integrations primarily using SQL-based systems.
     - Engaged in agile development cycles, actively participating in sprints and team meetings.
-    - Ensured high-quality code through comprehensive testing methods and routine code reviews.
+    - Ensured high-quality code through comprehensive testing methods, including Test-Driven Development (TDD), and routine code reviews.
     - Troubleshot and addressed technical issues to optimize application functionality and user experience.
 - Key Achievements:
-    - Pioneered a concurrency solution in unit tests that significantly improved efficiency of testing and dicreased testing time.
-    - Facilitated a seamless third-party API integration which enabled new features and adhered to a stringent deployment schedule.
-    - Created and updated documentation and enhancing team knowledge sharing.
+    - Pioneered a concurrency solution in unit tests what decreased running time by 83%.
+    - Documented the troubleshooting process in the main unit test area to ensure that each team member could perform it efficiently and effectively.

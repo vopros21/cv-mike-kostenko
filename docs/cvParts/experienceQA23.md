@@ -10,5 +10,5 @@ Ensuring the quality and reliability of complex software systems by developing a
     - Conducted root cause analysis for recurring issues, collaborating with cross-functional teams to ensure corrective actions are implemented.
     - Maintained up-to-date knowledge of quality assurance standards and industry trends to continually refine testing processes.
 - Key Achievements:
-    - Increased test coverage through the development of a comprehensive suite of automated tests, significantly reducing manual effort.
+    - Increased test coverage by 15% through the development of a comprehensive suite of automated tests, significantly reducing manual effort.
     - Acted as a key contributor in a team that successfully met all critical deadlines for product launches.
