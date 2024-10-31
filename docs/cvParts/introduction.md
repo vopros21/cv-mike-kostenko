@@ -1,1 +1,1 @@
-Welcome to my online CV. Here you can find information about my education, skills, and work experience.
+I’m an engineer with **six years of experience**. I started as **QA engineer** for a big fintech company and later switched to **Java Developer** position where I have been working for the last few years. Now I’m looking for **Software Engineer / Developer** position. I’m opened to learn a new tech stack.
