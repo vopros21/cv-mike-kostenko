@@ -9,7 +9,7 @@ switch Skills {
     case Testing:
         print("JUnit, Mockito")
     case Frameworks:
-        print("Swing, Spring, Spring Boot, SwiftUI")
+        print("Swing, Spring, Spring Boot, SwiftUI, picocli")
     default:
         print("Learning...")
 }
