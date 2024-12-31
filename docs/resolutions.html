@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkbox State Persistence</title>
+    <title>New Year Resolutions 2025</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,57 +15,72 @@
         label {
             cursor: pointer;
         }
+        .strikethrough {
+            text-decoration: line-through;
+        }
     </style>
 </head>
 <body>
-    <h1>Persistent Checkbox List</h1>
-    <form id="checkboxForm">
-        <div class="checkbox-container">
-            <input type="checkbox" id="option1" name="option1" value="Option 1">
-            <label for="option1">Option 1 - A brief description of this option.</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option2" name="option2" value="Option 2">
-            <label for="option2">Option 2 - A brief description of this option.</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option3" name="option3" value="Option 3">
-            <label for="option3">Option 3 - A brief description of this option.</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option4" name="option4" value="Option 4">
-            <label for="option4">Option 4 - A brief description of this option.</label>
-        </div>
-    </form>
+<h1>New Year Resolutions 2025</h1>
+<form id="checkboxForm">
+    <div class="checkbox-container">
+        <input type="checkbox" id="option1" name="option1" value="Option 1">
+        <label for="option1">1. Car</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="option2" name="option2" value="Option 2">
+        <label for="option2">2. Published app in AppStore</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="option3" name="option3" value="Option 3">
+        <label for="option3">3. Middle Developer position (E4)</label>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="option4" name="option4" value="Option 4">
+        <label for="option4">4. Marathon under 3:45</label>
+    </div>
+</form>
 
-    <script>
-        // Function to save the state of checkboxes to localStorage
-        function saveCheckboxState() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                localStorage.setItem(checkbox.id, checkbox.checked);
-            });
-        }
-
-        // Function to load the state of checkboxes from localStorage
-        function loadCheckboxState() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                const savedState = localStorage.getItem(checkbox.id);
-                checkbox.checked = savedState === 'true'; // Convert string to boolean
-            });
-        }
-
-        // Attach event listeners and initialize states
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCheckboxState(); // Load saved states on page load
-
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', saveCheckboxState); // Save state on change
-            });
+<script>
+    // Function to save the state of checkboxes to localStorage
+    function saveCheckboxState() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            localStorage.setItem(checkbox.id, checkbox.checked);
+            toggleStrikethrough(checkbox); // Apply strikethrough based on state
         });
-    </script>
+    }
+
+    // Function to load the state of checkboxes from localStorage
+    function loadCheckboxState() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            const savedState = localStorage.getItem(checkbox.id);
+            checkbox.checked = savedState === 'true'; // Convert string to boolean
+            toggleStrikethrough(checkbox); // Apply strikethrough based on state
+        });
+    }
+
+    // Function to toggle strikethrough on labels
+    function toggleStrikethrough(checkbox) {
+        const label = document.querySelector(`label[for="${checkbox.id}"]`);
+        if (checkbox.checked) {
+            label.classList.add('strikethrough');
+        } else {
+            label.classList.remove('strikethrough');
+        }
+    }
+
+    // Attach event listeners and initialize states
+    document.addEventListener('DOMContentLoaded', () => {
+        loadCheckboxState(); // Load saved states on page load
+
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', saveCheckboxState); // Save state on change
+            checkbox.addEventListener('change', () => toggleStrikethrough(checkbox)); // Toggle strikethrough on change
+        });
+    });
+</script>
 </body>
 </html>
-
