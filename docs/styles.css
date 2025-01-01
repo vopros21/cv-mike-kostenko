@@ -2,11 +2,20 @@
 body {
  font-family: sans-serif;
 }
-header, footer {
+header {
+ background-color: #f1f1f1;
+ text-align: center;
+ padding: 10px 0;
+ position: relative; /* Ensures the button is positioned relative to the header */
+ height: 30px; /* Adjust based on your header's height */
+}
+
+footer {
  background-color: #f1f1f1;
  text-align: center;
  padding: 10px 0;
 }
+
 main {
  max-width: 800px;
  margin: 0 auto;
@@ -37,7 +46,7 @@ section {
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active, .collapsible:hover {
-  background-color: #222831;
+  background-color: #222831; /* Clickable part colour */
 }
 
 /* Style the collapsible content. Note: hidden by default */
@@ -46,4 +55,20 @@ section {
   display: none;
   overflow: hidden;
   background-color: #EEEEEE;
+}
+
+#pdf-button {
+    position: absolute; /* Allows precise positioning within the header */
+    bottom: 10px; /* Distance from the bottom of the header */
+    right: 10px; /* Distance from the right edge of the header */
+    padding: 10px 20px; /* Button padding for aesthetics */
+    background-color: #222831; /* Button color */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+#pdf-button:hover {
+    background-color: #4e535a; /* Lighter shade on hover for effect */
 }
