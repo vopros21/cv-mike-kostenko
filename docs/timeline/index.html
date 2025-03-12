@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Timeline Viewer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="timeline">
+            <h2>Timeline</h2>
+            <div class="timeline-content">
+                <div class="date-item" data-files='[
+                        {"file": "FreeRTOS_intro.pdf", "type": "pdf", "title": "Introduction to FreeRTOS"}
+                    ]'>
+                    <span class="date-circle"></span>
+                    <h3>March 10, 2025</h3>
+                    <p>Introduction to FreeRTOS</p>
+                </div>
+
+
+                <div class="date-item" data-files='[
+                        {"file": "cForEmbedded.jpeg", "type": "image", "title": "C for Embedded"}
+                    ]'>
+                    <span class="date-circle"></span>
+                    <h3>February 23, 2025</h3>
+                    <p>Embedded C</p>
+                </div>
+
+                <div class="date-item" data-files='[
+                        {"file": "splunk_01_intro.pdf", "type": "pdf", "title": "Introduction to Splunk"},
+                        {"file": "splunk_02_usnigFields.pdf", "type": "pdf", "title": "Using Fields in Splunk"},
+                        {"file": "splunk_03_searchUnderTheHood.pdf", "type": "pdf", "title": "Search Under the Hood"}
+                    ]'>
+                    <span class="date-circle"></span>
+                    <h3>February 21, 2025</h3>
+                    <p>Splunk course</p>
+                </div>
+
+                <div class="date-item" data-files='[
+                        {"file": "GradleforJavaApps.pdf", "type": "pdf", "title": "Gradle for Java Applications"}
+                    ]'>
+                    <span class="date-circle"></span>
+                    <h3>May 9, 2024</h3>
+                    <p>Gradle for Java-Based Applications and Libraries</p>
+                </div>
+                
+                <div class="date-item" data-files='[
+                {"file": "100DaysOfSwiftUI.jpeg", "type": "image", "title": "100 Days of SwiftUI"}
+                ]'>
+                    <span class="date-circle"></span>
+                    <h3>November 15, 2023</h3>
+                    <p>100 Days of SwiftUI</p>
+                </div>
+            </div>
+        </div>
+        <div class="preview-container">
+            <h2>Certificates</h2>
+            <div id="preview-content">
+                <p class="no-preview">Select a date from the timeline to view the document</p>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
