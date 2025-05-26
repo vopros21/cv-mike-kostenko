@@ -24,8 +24,8 @@
 <h1>New Year Resolutions 2025</h1>
 <form id="checkboxForm">
     <div class="checkbox-container">
-        <input type="checkbox" id="option1" name="option1" value="Option 1">
-        <label for="option1">1. Car</label>
+        <input type="checkbox" id="1" name="option1" value="Option 1" checked>
+        <label for="1" class="strikethrough">1. Car</label>
     </div>
     <div class="checkbox-container">
         <input type="checkbox" id="option2" name="option2" value="Option 2">
@@ -56,7 +56,7 @@
 <script>
     // Function to save the state of checkboxes to localStorage
     function saveCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="option"]');
         checkboxes.forEach(checkbox => {
             localStorage.setItem(checkbox.id, checkbox.checked);
             toggleStrikethrough(checkbox); // Apply strikethrough based on state
@@ -65,7 +65,7 @@
 
     // Function to load the state of checkboxes from localStorage
     function loadCheckboxState() {
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="option"]');
         checkboxes.forEach(checkbox => {
             const savedState = localStorage.getItem(checkbox.id);
             checkbox.checked = savedState === 'true'; // Convert string to boolean
