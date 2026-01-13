@@ -1,69 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mike Kostenko - Curriculum Vitae</title>
-<!-- Add link to your CSS file -->
-<link rel="stylesheet" href="styles.css">
-<link rel="icon" type="image/x-icon" href="images/favicon.ico">
-</head>
-<body>
-<header>
-    <!-- Navigation bar, if needed -->
-    <button id="pdf-button" onclick="window.print()">Print as PDF</button>
-</header>
-<main>
-    <!-- Lightweight client-side loader that feature-detects and load polyfills only when necessary -->
-    <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
-    <!-- Load the element definition -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
- <!-- Main content of the CV -->
- <section id="introduction">
-        <h1>Mike Kostenko</h1>
-     <zero-md src="cvParts/introduction.md"></zero-md>
- </section>
- 
- <section id="education">
-     <h2>Education</h2>
-     <zero-md src="cvParts/education.md"></zero-md>
- </section>
 
- <section id="certificates">
-    <h2>Certificates</h2>
-    <a href="timeline/index.html">View Certificates</a>
-</section>
- 
- <section id="experience">
-     <h2>Work Experience</h2>
-     <button type="button" class="collapsible">
-         Java Developer in [Jan_2023 ... ]
-     </button>
-     <div class="content">
-         <p>
-             <zero-md src="cvParts/experienceJava23.md"></zero-md>
-         </p>
-     </div>
-     <button type="button" class="collapsible">
-         QA Engineer in [Aug_2018 ... Dec_2022]
-     </button>
-     <div class="content">
-         <p>
-             <zero-md src="cvParts/experienceQA23.md"></zero-md>
-         </p>
-     </div>
- </section>
- 
- <section id="skills">
-     <h2>Skills</h2>
-     <zero-md src="cvParts/skills.md"></zero-md>
- </section>
-</main>
-<footer>
- <!-- Footer content -->
- <p>📧 Contact me at: <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
- <p>Mike Kostenko 2023-2025</p>
-</footer>
-<script src="scripts/collapsibleButtons.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mike Kostenko - Curriculum Vitae</title>
+    <!-- Add link to your CSS file -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <!-- Navigation bar, if needed -->
+        <button id="pdf-button" onclick="window.print()">Print as PDF</button>
+    </header>
+    <main>
+        <!-- Lightweight client-side loader that feature-detects and load polyfills only when necessary -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
+        <!-- Load the element definition -->
+        <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
+        <!-- Main content of the CV -->
+        <section id="introduction">
+            <h1>Mike Kostenko</h1>
+            <zero-md src="cvParts/introduction.md"></zero-md>
+        </section>
+
+        <section id="education">
+            <h2>Education</h2>
+            <zero-md src="cvParts/education.md"></zero-md>
+        </section>
+
+        <section id="certificates">
+            <h2>Certificates</h2>
+            <a href="timeline/index.html">View Certificates</a>
+        </section>
+
+        <section id="experience">
+            <h2>Work Experience</h2>
+            <button type="button" class="collapsible">
+                Java Developer in [Jan_2023 ... ]
+            </button>
+            <div class="content">
+                <p>
+                    <zero-md src="cvParts/experienceJava23.md"></zero-md>
+                </p>
+            </div>
+            <button type="button" class="collapsible">
+                QA Engineer in [Aug_2018 ... Dec_2022]
+            </button>
+            <div class="content">
+                <p>
+                    <zero-md src="cvParts/experienceQA23.md"></zero-md>
+                </p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills</h2>
+            <zero-md src="cvParts/skills.md"></zero-md>
+        </section>
+    </main>
+    <footer>
+        <!-- Footer content -->
+        <p>📧 Contact me at: <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+        <p>Mike Kostenko 2023-2026</p>
+    </footer>
+    <script src="scripts/collapsibleButtons.js"></script>
 </body>
+
 </html>
