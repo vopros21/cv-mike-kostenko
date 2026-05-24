@@ -1,112 +1,208 @@
-/* styles.css */
+/* ==========================================
+   Apple-inspired CV — styles.css
+   ========================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
- font-family: sans-serif;
- min-height: 100vh;
- display: flex;
- flex-direction: column;
- margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  background-color: #f5f5f7;
+  color: #1d1d1f;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
 }
 
 button {
- font-family: inherit;
+  font-family: inherit;
 }
 
+/* ---- Header ---- */
 header {
- background-color: #f1f1f1;
- text-align: center;
- padding: 10px 0;
- position: relative;
- height: 55px;
- box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  padding: 0 24px;
+  position: relative;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+/* ---- Footer ---- */
 footer {
- background-color: #f1f1f1;
- text-align: center;
- padding: 10px 0;
+  background-color: #f5f5f7;
+  text-align: center;
+  padding: 24px 16px;
+  color: #6e6e73;
+  font-size: 14px;
 }
 
+footer a {
+  color: #0071e3;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Main & Card ---- */
 main {
- max-width: 800px;
- margin: 0 auto;
- padding: 15px;
- flex: 1;
-}
-h1, h2 {
-  color: #333;
-  font-family: "Consolas", "Monaco", "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New";
-}
-section {
- margin-bottom: 15px;
+  max-width: 860px;
+  width: 100%;
+  margin: 32px auto;
+  padding: 0 16px;
+  flex: 1;
 }
 
-/* Style the button that is used to open and close the collapsible content */
-/* https://colorhunt.co/palette/22283131363f76abaeeeeeee */
+.cv-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  padding: 40px 48px;
+}
+
+/* ---- Typography ---- */
+h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px;
+}
+
+h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e5e7;
+}
+
+section {
+  margin-bottom: 32px;
+}
+
+/* ---- Links ---- */
+a {
+  color: #0071e3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Collapsible buttons ---- */
 .collapsible {
-  background-color: #31363F;
-  color: #76ABAE;
+  background-color: #ffffff;
+  color: #1d1d1f;
   cursor: pointer;
-  padding: 18px;
+  padding: 14px 18px;
   width: 100%;
-  border: none;
+  border: 1px solid #e5e5e7;
+  border-left: 3px solid #0071e3;
+  border-radius: 8px;
   text-align: left;
   outline: none;
   font-size: 15px;
-  font-family: "Consolas", "Monaco", "Lucida Console", "Liberation Mono", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Courier New";
+  font-weight: 500;
+  margin-bottom: 6px;
+  transition: box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-.active, .collapsible:hover {
-  background-color: #222831; /* Clickable part colour */
+.active,
+.collapsible:hover {
+  background-color: #f5f5f7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* Style the collapsible content. Note: hidden by default */
+/* ---- Collapsible content ---- */
 .content {
-  padding: 0 18px;
+  padding: 8px 18px 12px;
   display: none;
   overflow: hidden;
-  background-color: #EEEEEE;
+  background-color: #ffffff;
+  margin-bottom: 12px;
 }
 
+/* ---- PDF / Print button ---- */
 #pdf-button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 10px 20px;
-    background-color: #222831;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 8px 18px;
+  background-color: #0071e3;
+  color: #ffffff;
+  border: none;
+  border-radius: 980px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
 }
 
 #pdf-button:hover {
-    background-color: #4e535a;
+  background-color: #0077ed;
 }
 
+/* ---- War protest stamp: push below the header ---- */
+#nez2 {
+  top: 60px !important;
+}
+
+/* ---- Mobile ---- */
 @media (max-width: 600px) {
-    header {
-        height: auto;
-        padding: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-    }
+  header {
+    height: auto;
+    padding: 10px 16px;
+  }
 
-    #pdf-button {
-        position: static;
-        display: none;
-    }
+  #pdf-button {
+    display: none;
+  }
 
-    main {
-        max-width: 100%;
-        padding: 10px;
-    }
+  main {
+    margin: 16px auto;
+    padding: 0 10px;
+  }
 
-    .collapsible {
-        font-size: 13px;
-        padding: 12px;
-        white-space: normal;
-        word-break: break-word;
-    }
+  .cv-card {
+    padding: 24px 20px;
+    border-radius: 8px;
+  }
+
+  .collapsible {
+    font-size: 13px;
+    padding: 12px 14px;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  #nez2 {
+    top: 50px !important;
+  }
+}
+
+/* ---- Print ---- */
+@media print {
+  header,
+  footer {
+    display: none;
+  }
+
+  body {
+    background: white;
+  }
+
+  .cv-card {
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .content {
+    display: block !important;
+  }
 }
