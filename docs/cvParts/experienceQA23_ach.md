@@ -1,0 +1,3 @@
+- Key Achievements:
+    - Increased test coverage by 15% through the development of a comprehensive suite of automated tests, significantly reducing manual effort.
+    - Acted as a key contributor in a team that successfully met all critical deadlines for product launches.
