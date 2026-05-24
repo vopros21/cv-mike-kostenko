@@ -85,14 +85,30 @@ h2 {
 }
 
 section {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .subtitle {
+  color: #0071e3;
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: -8px 0 16px 0;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Contact row ---- */
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: center;
+  margin: 8px 0 20px 0;
+  font-size: 0.95rem;
   color: #6e6e73;
-  font-size: 1.1rem;
-  font-weight: 400;
-  margin: -12px 0 20px 0;
+}
+
+.contact-row a {
+  color: #0071e3;
 }
 
 /* ---- Links ---- */
@@ -121,6 +137,20 @@ a:hover {
   font-weight: 500;
   margin-bottom: 6px;
   transition: box-shadow 0.15s ease, background-color 0.15s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 0.75rem;
+  color: #6e6e73;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.collapsible.active .arrow {
+  transform: rotate(90deg);
 }
 
 .active,
@@ -155,9 +185,18 @@ a:hover {
   background-color: #0077ed;
 }
 
-/* ---- War protest stamp: push below the header ---- */
+/* ---- War protest stamp: fixed in grey margin, clear of card ---- */
 #nez2 {
-  top: 60px !important;
+  position: fixed !important;
+  right: 16px !important;
+  top: 70px !important;
+  z-index: 10;
+}
+
+@media (max-width: 900px) {
+  #nez2 {
+    display: none !important;
+  }
 }
 
 /* ---- Mobile ---- */
@@ -186,10 +225,6 @@ a:hover {
     padding: 12px 14px;
     white-space: normal;
     word-break: break-word;
-  }
-
-  #nez2 {
-    top: 50px !important;
   }
 }
 
