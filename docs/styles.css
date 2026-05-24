@@ -187,7 +187,7 @@ a:hover {
 
 /* ---- War protest stamp: fixed in grey margin, clear of card ---- */
 #nez2 {
-  position: fixed !important;
+  position: absolute !important;
   right: 16px !important;
   top: 70px !important;
   z-index: 10;
