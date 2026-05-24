@@ -189,8 +189,9 @@ a:hover {
 /* ---- Print ---- */
 @media print {
   header,
-  footer {
-    display: none;
+  footer,
+  #nez2 {
+    display: none !important;
   }
 
   body {
