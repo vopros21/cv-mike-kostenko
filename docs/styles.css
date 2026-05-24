@@ -1,13 +1,23 @@
 /* styles.css */
 body {
  font-family: sans-serif;
+ min-height: 100vh;
+ display: flex;
+ flex-direction: column;
+ margin: 0;
 }
+
+button {
+ font-family: inherit;
+}
+
 header {
  background-color: #f1f1f1;
  text-align: center;
  padding: 10px 0;
- position: relative; /* Ensures the button is positioned relative to the header */
- height: 30px; /* Adjust based on your header's height */
+ position: relative;
+ height: 55px;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 footer {
@@ -20,6 +30,7 @@ main {
  max-width: 800px;
  margin: 0 auto;
  padding: 15px;
+ flex: 1;
 }
 h1, h2 {
   color: #333;
@@ -58,17 +69,44 @@ section {
 }
 
 #pdf-button {
-    position: absolute; /* Allows precise positioning within the header */
-    bottom: 10px; /* Distance from the bottom of the header */
-    right: 10px; /* Distance from the right edge of the header */
-    padding: 10px 20px; /* Button padding for aesthetics */
-    background-color: #222831; /* Button color */
-    color: white; /* Text color */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #222831;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 #pdf-button:hover {
-    background-color: #4e535a; /* Lighter shade on hover for effect */
+    background-color: #4e535a;
+}
+
+@media (max-width: 600px) {
+    header {
+        height: auto;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    #pdf-button {
+        position: static;
+        display: none;
+    }
+
+    main {
+        max-width: 100%;
+        padding: 10px;
+    }
+
+    .collapsible {
+        font-size: 13px;
+        padding: 12px;
+        white-space: normal;
+        word-break: break-word;
+    }
 }
