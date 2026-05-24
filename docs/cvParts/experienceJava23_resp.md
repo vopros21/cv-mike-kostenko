@@ -1,4 +1,4 @@
-<ins>Company:</ins> **[Devexperts](https://devexperts.com)**
+<ins>Company:</ins> **<a href="https://devexperts.com" target="_blank">Devexperts</a>**
 
 Developing and maintaining modules within a large-scale fintech platform,
 working across the full development lifecycle from requirements to deployment.

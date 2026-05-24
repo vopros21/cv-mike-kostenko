@@ -1,4 +1,4 @@
-<ins>Company:</ins> **[Devexperts](https://devexperts.com)**
+<ins>Company:</ins> **<a href="https://devexperts.com" target="_blank">Devexperts</a>**
 
 Ensuring quality and reliability of a complex fintech platform through
 structured testing and cross-team collaboration.
