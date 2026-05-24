@@ -1,5 +1,5 @@
 Experienced **Java Developer** with solid expertise in backend system development, object-oriented design, and API integration. Skilled in **Java and Spring**, contributing to robust and efficient codebases across various projects. Certified as an **Oracle Certified Java Programmer (OCJP), Java SE 21**, demonstrating advanced technical knowledge and a commitment to best practices in modern Java development.
 
-**Location:** Porto, Portugal
-**GitHub:** [vopros21](https://github.com/vopros21)
+**Location:** Porto, Portugal<br>
+**GitHub:** [vopros21](https://github.com/vopros21)<br>
 **Languages:** English — C1 / Portuguese — A2
