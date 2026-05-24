@@ -211,6 +211,12 @@ a:hover {
 
   body {
     background: white;
+    min-height: unset;
+    display: block;
+  }
+
+  main {
+    flex: none;
   }
 
   .cv-card {
