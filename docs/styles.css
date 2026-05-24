@@ -263,11 +263,15 @@ a:hover {
 
   .cv-card {
     box-shadow: none;
-    padding: 20px 24px;
+    padding: 16px 24px;
   }
 
   section {
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+  }
+
+  .contact-row {
+    display: none;
   }
 
   .content {
