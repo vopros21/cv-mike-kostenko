@@ -231,6 +231,7 @@ a:hover {
 /* ---- Print ---- */
 @media print {
   header,
+  footer,
   #nez2 {
     display: none !important;
   }
