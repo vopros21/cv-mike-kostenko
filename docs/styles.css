@@ -88,6 +88,13 @@ section {
   margin-bottom: 32px;
 }
 
+.subtitle {
+  color: #6e6e73;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: -12px 0 20px 0;
+}
+
 /* ---- Links ---- */
 a {
   color: #0071e3;
