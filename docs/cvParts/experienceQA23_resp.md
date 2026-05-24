@@ -1,11 +1,12 @@
-<ins>Company:</ins> **[Devexperts](https://www.devexperts.com/)**
+<ins>Company:</ins> **[Devexperts](https://devexperts.com)**
 
-Ensuring the quality and reliability of complex software systems by developing and executing rigorous testing protocols
+Ensuring quality and reliability of a complex fintech platform through
+structured testing and cross-team collaboration.
 
 - Key Responsibilities:
-    - Devised and implemented detailed test plans to validate functionality, compatibility, and performance of software products.
-    - Collaborated with development teams to identify system requirements, ensuring tests are aligned with user needs and business objectives.
-    - Managed the defect lifecycle, from discovery to successful resolution, using JIRA tracking system to document and monitor issues.
-    - Automated repetitive tasks and tests using various scripting languages, increasing efficiency and accuracy of the test cycles.
-    - Conducted root cause analysis for recurring issues, collaborating with cross-functional teams to ensure corrective actions are implemented.
-    - Maintained up-to-date knowledge of quality assurance standards and industry trends to continually refine testing processes.
+  - Analysed and developed documentation: business/technical requirements,
+    test cases and scenarios.
+  - Collaborated with the QA automation team to adapt test cases,
+    validate automated tests, and interpret results against functional requirements.
+  - Executed functional testing for new features and regression testing cycles.
+  - Developed Bash and Python scripts to automate routine QA tasks.

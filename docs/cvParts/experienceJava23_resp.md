@@ -1,10 +1,13 @@
-<ins>Company:</ins> **[Devexperts](https://www.devexperts.com/)**
+<ins>Company:</ins> **[Devexperts](https://devexperts.com)**
 
-Participating in the development and maintenance of several key enterprise applications with a focus on scalable Java-based back-end components.
+Developing and maintaining modules within a large-scale fintech platform,
+working across the full development lifecycle from requirements to deployment.
 
 - Key Responsibilities:
-    - Developed and maintained Java-based components for various applications, prioritizing performance and responsiveness.
-    - Interpreted application storyboards and use cases into functional features, working in collaboration with cross-functional teams.
-    - Engaged in agile development cycles, actively participating in sprints and team meetings.
-    - Ensured high-quality code through comprehensive testing methods, including Test-Driven Development (TDD), and routine code reviews.
-    - Troubleshot and addressed technical issues to optimize application functionality and user experience.
+  - Analyse and implement technical requirements for backlog tasks,
+    estimating scope and duration based on size and complexity.
+  - Implement code logic and provide the QA team with functional context
+    on code changes to support effective testing.
+  - Review team pull requests, focusing on code quality, performance,
+    and maintainability.
+  - Provide deployment support to ensure highest product quality.
