@@ -252,6 +252,11 @@ a:hover {
     display: none !important;
   }
 
+  /* Hide Projects section */
+  #projects {
+    display: none;
+  }
+
   body {
     background: white;
     min-height: unset;
