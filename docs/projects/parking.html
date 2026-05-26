@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parking Service — Mike Kostenko</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <button id="pdf-button" onclick="window.print()">Print as PDF</button>
+    </header>
+    <main>
+        <div class="cv-card">
+            <section>
+                <a href="../index.html" style="font-size: 0.9rem;">← Back</a>
+                <h1 style="margin-top: 16px;">Parking Service — Internal Office Booking System</h1>
+                <p class="subtitle">Web app · 2025–present · <a href="https://parking.singledev.eu" target="_blank">parking.singledev.eu</a></p>
+
+                <h2>Overview</h2>
+                <p>Full-stack parking spot reservation system built for a real workplace. Supports daily bookings, half-day slots (AM/PM/Full Day), a waitlist queue with automatic slot-aware offers, and a per-day popup showing who has booked. Slack notifications integrated for queue activity.</p>
+
+                <h2>Tech Stack</h2>
+                <p>Java (Spring Boot), PostgreSQL (Neon DB), Resend (transactional email / magic link auth), Vite 5 + vanilla JS frontend, Cloudflare DNS, Render hosting.</p>
+
+                <h2>Architecture</h2>
+                <p>Monorepo with separate <code>frontend/</code> and backend modules. Passwordless auth via magic links (email → session cookie). Queue entries carry a <code>desired_slot</code> field so offers are filtered by slot type. Frontend is built via <code>build.sh</code> at deploy time — the dist folder is not committed to git.</p>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>📧 Contact me at: <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+        <p>Mike Kostenko 2023-2026</p>
+    </footer>
+</body>
+
+</html>

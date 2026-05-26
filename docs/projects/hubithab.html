@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HubitHab — Mike Kostenko</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header>
+        <button id="pdf-button" onclick="window.print()">Print as PDF</button>
+    </header>
+    <main>
+        <div class="cv-card">
+            <section>
+                <a href="../index.html" style="font-size: 0.9rem;">← Back</a>
+                <h1 style="margin-top: 16px;">HubitHab — Automatic Habit Tracker</h1>
+                <p class="subtitle">iOS app · 2024–present · <a href="https://hubithab.eu" target="_blank">hubithab.eu</a></p>
+
+                <h2>Overview</h2>
+                <p>HubitHab tracks habits automatically by pulling data from external services — no manual logging required. It integrates with GitHub commit activity, LeetCode submissions, Apple HealthKit (steps), and X/Twitter posts, then visualises streaks and history as heatmaps.</p>
+
+                <h2>Tech Stack</h2>
+                <p>Swift / SwiftUI, HealthKit, Spring Boot proxy backend (Java, Render hosting).</p>
+
+                <h2>Architecture</h2>
+                <p>Connection-based plugin model — each service conforms to a protocol with its own renderer (<code>ConnectionViewFactory</code>). The backend is a thin authenticated proxy that keeps third-party credentials off-device, so the app never stores API keys locally.</p>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>📧 Contact me at: <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+        <p>Mike Kostenko 2023-2026</p>
+    </footer>
+</body>
+
+</html>
