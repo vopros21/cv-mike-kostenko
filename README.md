@@ -1,2 +1,2 @@
-# cv-mike-kostenko
-My work experience and areas of interests
+# Mike Kostenko
+Public CV: work experience, areas of interests, pet projects.
