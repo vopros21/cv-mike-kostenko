@@ -3,7 +3,7 @@ title: Hello, world
 date: 2026-10-01
 summary: Why this blog exists, what I plan to write about, and a quick tour of the formatting it supports.
 category: tech
-draft: false
+draft: true
 ---
 
 This is the first post on the blog. I'll write here about **Java**, testing, the occasional side project, and life in Porto.

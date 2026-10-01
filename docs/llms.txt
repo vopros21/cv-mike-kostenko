@@ -16,7 +16,7 @@
 <!-- blog:start -->
 ## Blog
 
-- [Hello, world](https://singledev.eu/blog/hello-world.md): Why this blog exists, what I plan to write about, and a quick tour of the formatting it supports.
+- No posts yet.
 <!-- blog:end -->
 
 ## Optional

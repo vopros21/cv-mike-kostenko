@@ -130,7 +130,7 @@ ${body}
         </div>
     </main>
     <footer>
-        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="index.html">Blog</a></p>
     </footer>
 </body>
 
@@ -148,7 +148,7 @@ function indexPage(posts) {
                 </li>`).join('\n');
   const list = posts.length
     ? `            <ul class="post-list">\n${items}\n            </ul>`
-    : `            <p class="subtitle">No posts yet.</p>`;
+    : `            <p class="post-empty">No posts yet. Check back soon, or subscribe to the <a href="feed.xml">RSS feed</a>.</p>`;
   return shell({
     title: 'Blog — Mike Kostenko',
     description: 'Posts by Mike Kostenko, Java Software Engineer in Porto: software engineering and life.',
@@ -205,8 +205,7 @@ function feed(posts) {
     <link>${BLOG_URL}</link>
     <description>Posts by Mike Kostenko, Java Software Engineer in Porto.</description>
     <language>en</language>
-    <atom:link href="${BLOG_URL}feed.xml" rel="self" type="application/rss+xml"/>${latest.length ? `\n    <lastBuildDate>${rfc822(latest[0].date)}</lastBuildDate>` : ''}
-${items}
+    <atom:link href="${BLOG_URL}feed.xml" rel="self" type="application/rss+xml"/>${latest.length ? `\n    <lastBuildDate>${rfc822(latest[0].date)}</lastBuildDate>\n${items}` : ''}
   </channel>
 </rss>
 `;
