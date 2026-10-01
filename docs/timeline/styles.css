@@ -142,7 +142,7 @@ body > main.tl-layout {
 .open-file {
   display: inline-block;
   margin-top: 14px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
 }
 .open-file[hidden] { display: none; }
