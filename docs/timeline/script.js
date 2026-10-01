@@ -88,3 +88,31 @@ document.addEventListener('DOMContentLoaded', function() {
         documentPreviewArea.innerHTML = '<p class="no-preview">No dates available in the timeline</p>';
     }
 });
+
+// Keyboard support and, on single-column layouts, scroll to the preview after a user click.
+document.addEventListener('DOMContentLoaded', function() {
+    const preview = document.querySelector('.preview-container');
+    const singleColumn = window.matchMedia('(max-width: 1024px)');
+    const showPreview = () => {
+        if (!singleColumn.matches || !preview) return;
+        const scroll = () => preview.scrollIntoView({ behavior: 'smooth' });
+        // An image that is still loading has no height yet, so the page is too short to scroll to it
+        const img = preview.querySelector('.document-preview-area img');
+        if (img && !img.complete) img.addEventListener('load', scroll, { once: true });
+        else requestAnimationFrame(scroll);
+    };
+
+    document.querySelectorAll('.date-item').forEach(item => {
+        item.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+                showPreview();
+            }
+        });
+        item.addEventListener('click', function(e) {
+            // isTrusted is false for the automatic first-item click on load
+            if (e.isTrusted) showPreview();
+        });
+    });
+});

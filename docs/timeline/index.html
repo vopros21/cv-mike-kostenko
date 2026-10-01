@@ -3,98 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document Timeline Viewer</title>
+    <title>Certificates — Mike Kostenko</title>
+    <meta name="theme-color" content="#eef1f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b0f1a" media="(prefers-color-scheme: dark)">
+    <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 <body>
-    <div class="container">
-        <div class="timeline">
-            <a href="../index.html" class="button">Home</a>
-            <h2>Timeline</h2>
-            <div class="timeline-content">
-                <div class="date-item" data-files='[
+    <header class="topbar glass">
+        <a href="../index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+
+    <main class="tl-layout">
+        <section class="timeline" aria-labelledby="tl-title">
+            <a href="../index.html" class="back">← Back</a>
+            <h1 id="tl-title">Certificates</h1>
+            <p class="subtitle">Courses and certifications, newest first. Select one to preview it.</p>
+
+            <ol class="timeline-content">
+                <li class="date-item glass featured" tabindex="0" role="button" data-files='[
                         {"file": "eCertificate_OCJP21.pdf", "type": "pdf", "title": "Oracle Certified Professional: Java SE 21 Developer"}
                     ]'>
-                    <span class="date-circle"></span>
-                    <h3>September 19, 2025</h3>
+                    <span class="date-circle" aria-hidden="true"></span>
+                    <h3>September 19, 2025 <span class="badge">Latest</span></h3>
                     <p>Oracle Certified Professional: Java SE 21 Developer</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "Java SE 11 Developer 1Z0819 Prep.pdf", "type": "pdf", "title": "Java SE 11 Developer 1Z0819 Preparation"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>May 20, 2025</h3>
                     <p>Java SE 11 Developer 1Z0819 Preparation</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "IoTfoundationsOS.pdf", "type": "pdf", "title": "IoT Foundations: OS Fundamentals"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>March 13, 2025</h3>
                     <p>IoT Foundations: OS Fundamentals</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "FreeRTOS_intro.pdf", "type": "pdf", "title": "Introduction to FreeRTOS"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>March 10, 2025</h3>
                     <p>Introduction to FreeRTOS</p>
-                </div>
+                </li>
 
-
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "cForEmbedded.jpeg", "type": "image", "title": "C for Embedded"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>February 23, 2025</h3>
                     <p>Embedded C</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "splunk_01_intro.pdf", "type": "pdf", "title": "Introduction to Splunk"},
                         {"file": "splunk_02_usnigFields.pdf", "type": "pdf", "title": "Using Fields in Splunk"},
                         {"file": "splunk_03_searchUnderTheHood.pdf", "type": "pdf", "title": "Search Under the Hood"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>February 21, 2025</h3>
                     <p>Splunk course</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
                         {"file": "GradleforJavaApps.pdf", "type": "pdf", "title": "Gradle for Java Applications"}
                     ]'>
-                    <span class="date-circle"></span>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>May 9, 2024</h3>
                     <p>Gradle for Java-Based Applications and Libraries</p>
-                </div>
-                
-                <div class="date-item" data-files='[
-                {"file": "GithubActionsPublishPackages.png", "type": "image", "title": "Leverage GitHub Actions"}
-                ]'>
-                    <span class="date-circle"></span>
+                </li>
+
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
+                        {"file": "GithubActionsPublishPackages.png", "type": "image", "title": "Leverage GitHub Actions"}
+                    ]'>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>April 5, 2024</h3>
                     <p>Leverage GitHub Actions</p>
-                </div>
+                </li>
 
-                <div class="date-item" data-files='[
-                {"file": "100DaysOfSwiftUI.jpeg", "type": "image", "title": "100 Days of SwiftUI"}
-                ]'>
-                    <span class="date-circle"></span>
+                <li class="date-item glass" tabindex="0" role="button" data-files='[
+                        {"file": "100DaysOfSwiftUI.jpeg", "type": "image", "title": "100 Days of SwiftUI"}
+                    ]'>
+                    <span class="date-circle" aria-hidden="true"></span>
                     <h3>November 15, 2023</h3>
                     <p>100 Days of SwiftUI</p>
-                </div>
-            </div>
-        </div>
-        <div class="preview-container">
-            <h2>Certificates</h2>
+                </li>
+            </ol>
+        </section>
+
+        <section class="preview-container panel glass" aria-label="Certificate preview">
+            <h2>Preview</h2>
             <div id="preview-content">
                 <p class="no-preview">Select a date from the timeline to view the document</p>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>
