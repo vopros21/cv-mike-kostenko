@@ -30,6 +30,7 @@ const md = await page.evaluate(() => {
       case 'H1': out.push(`# ${line(el)}`, ''); return;
       case 'H2': out.push(`## ${line(el)}`, ''); return;
       case 'H3': out.push(`### ${line(el)}`, ''); return;
+      case 'H4': out.push(`#### ${line(el)}`, ''); return;
       case 'UL': case 'OL':
         [...el.children].forEach(li => out.push(`- ${line(li)}`));
         out.push(''); return;

@@ -17,7 +17,7 @@
   html, body { margin: 0; padding: 0; }
   body {
     font-family: "Inter", -apple-system, "Helvetica Neue", Arial, sans-serif;
-    font-size: 8.6pt; line-height: 1.36; color: var(--text);
+    font-size: 8.6pt; line-height: 1.32; color: var(--text);
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
   a { color: var(--accent); text-decoration: none; }
@@ -26,7 +26,7 @@
 
   /* ---- Header (full width, echoes the site's glass identity panel) ---- */
   .head {
-    padding: 9mm 12mm 4.5mm;
+    padding: 8mm 10.5mm 4mm;
     background:
       radial-gradient(90mm 50mm at 0% 0%, rgba(96,140,255,0.26), transparent 70%),
       radial-gradient(90mm 60mm at 100% 0%, rgba(170,120,255,0.18), transparent 70%),
@@ -40,18 +40,18 @@
   .contacts .sep { color: var(--faint); white-space: normal; }
 
   /* ---- Columns ---- */
-  .main { padding: 4.5mm 12mm 0; display: flex; flex-direction: column; gap: 3.2mm; }
+  .main { padding: 4mm 10.5mm 0; display: flex; flex-direction: column; gap: 2.8mm; }
   /* The old sidebar content, now a tinted panel below the main content */
   .side {
-    margin: 3.2mm 12mm 0;
-    padding: 3mm 4.5mm;
+    margin: 2.8mm 10.5mm 0;
+    padding: 2.6mm 4.5mm;
     border-radius: 3mm;
     background:
       radial-gradient(90mm 50mm at 100% 0%, rgba(170,120,255,0.12), transparent 70%),
       radial-gradient(90mm 50mm at 0% 100%, rgba(60,200,190,0.14), transparent 70%),
       #f6f7fc;
     border: 1px solid var(--line);
-    display: flex; flex-direction: column; gap: 2.4mm;
+    display: flex; flex-direction: column; gap: 2mm;
   }
 
   h2 {
@@ -74,6 +74,11 @@
   .stat { color: var(--accent); font-weight: 700; }
   .duties li { position: relative; padding-left: 3.2mm; margin-bottom: 0.4mm; }
   .duties li::before { content: ""; position: absolute; left: 0.6mm; top: 0.62em; width: 1.1mm; height: 1.1mm; border-radius: 50%; background: var(--faint); }
+
+  .sub { margin: 1.4mm 0 0; padding: 1.6mm 3mm; border: 1px solid var(--line); border-radius: 2.5mm;
+         background: linear-gradient(160deg, rgba(96,140,255,0.06), rgba(170,120,255,0.05)); }
+  .sub h4 { font-size: 9.2pt; margin: 0 0 0.6mm; }
+  .sub .when { font-size: 8.2pt; }
 
   /* ---- Projects (stacked, so they never interleave) ---- */
   .project { border: 1px solid var(--line); border-radius: 2.5mm; padding: 1.8mm 3.2mm; margin-bottom: 1.6mm;
@@ -118,13 +123,20 @@
         <ul class="wins">
           <li><span class="stat">-83%</span> Cut unit test suite runtime by 83% by introducing concurrent test execution (Java concurrency, JUnit).</li>
           <li>Documented the troubleshooting process in the main unit test area so that each team member could perform it efficiently and effectively.</li>
+          <li>Extended the corporate-actions pipeline (dividends, splits) to persist data in the database via a new DAO layer, following the legacy codebase's patterns and Spring wiring.</li>
+          <li>Added unit tests for candle subscription-symbol logic (CandlePrice/CandleAlignment) edge cases.</li>
         </ul>
         <ul class="duties">
-          <li>Analyse and implement technical requirements for backlog tasks, estimating scope and duration based on size and complexity.</li>
-          <li>Implement code logic and provide the QA team with functional context on code changes to support effective testing.</li>
-          <li>Review team pull requests, focusing on code quality, performance, and maintainability.</li>
-          <li>Support deployments and releases.</li>
+          <li>Analyse, estimate and implement backlog tasks; review pull requests for code quality and performance; support releases.</li>
         </ul>
+        <div class="sub">
+          <h4>Internal platform: <a href="https://singledev.eu/projects/parking.html">Parking Service</a> <span class="when">| 2025 – Present</span></h4>
+          <ul class="duties">
+            <li>Designed, built and operate the office parking booking system used by ~80 employees (~100 bookings/week): half-day slots, waitlist queue, Slack notifications, admin audit log.</li>
+            <li>Migrated it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL; set up automated daily backups, off-site copies and a tested restore procedure.</li>
+            <li>Introduced spec-driven, AI-assisted development (Kiro): requirements, design and task breakdown, with characterization tests before refactoring core booking logic.</li>
+          </ul>
+        </div>
       </div>
       <div class="job">
         <h3>QA Engineer<span class="at">, Devexperts – Porto, Portugal</span> <span class="when">| Aug 2018 – Dec 2022</span></h3>
@@ -134,10 +146,7 @@
           <li>Key contributor in a team that met all critical deadlines for product launches.</li>
         </ul>
         <ul class="duties">
-          <li>Analysed and developed documentation: business/technical requirements, test cases and scenarios.</li>
-          <li>Worked with the QA automation team to adapt test cases, validate automated tests and interpret results.</li>
-          <li>Executed functional testing for new features and regression testing cycles.</li>
-          <li>Developed Bash and Python scripts to automate routine QA tasks.</li>
+          <li>Wrote test cases and requirements docs, ran functional and regression testing, and automated QA tasks with Bash and Python.</li>
         </ul>
       </div>
     </section>
@@ -148,10 +157,6 @@
         <h3><a href="https://singledev.eu/projects/hubithab.html">HubitHab</a> <span class="meta">| iOS app | 2024 – Present |</span> <span class="tech">Swift, SwiftUI, HealthKit, Spring Boot</span></h3>
         <p>Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X, with no manual logging.</p>
       </div>
-      <div class="project">
-        <h3><a href="https://singledev.eu/projects/parking.html">Parking Service</a> <span class="meta">| Web app | 2025 – Present |</span> <span class="tech">Spring Boot, PostgreSQL, Vite, Render</span></h3>
-        <p>Office parking booking with half-day slots, a waitlist queue and Slack notifications.</p>
-      </div>
     </section>
   </main>
 
@@ -160,6 +165,7 @@
       <h2>Skills</h2>
       <p><strong>Languages:</strong> Java (21), Swift, Groovy, Bash, Python</p>
       <p><strong>Frameworks:</strong> Spring, Spring Boot, REST APIs, Swing, SwiftUI, picocli</p>
+      <p><strong>Web:</strong> Node.js, Fastify, React</p>
       <p><strong>Databases:</strong> SQL, Oracle SQL, PostgreSQL, MySQL, SQLite, Liquibase</p>
       <p><strong>Testing:</strong> JUnit 5, Mockito, TDD</p>
       <p><strong>Tools:</strong> Git, Maven, Gradle, Continuous Integration/Delivery (CI/CD), GitHub Actions, Linux, JIRA, Splunk, IntelliJ IDEA, Xcode</p>

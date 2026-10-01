@@ -16,11 +16,16 @@ Developing and maintaining modules of a large-scale fintech platform across the 
 
 - -83% Cut unit test suite runtime by 83% by introducing concurrent test execution (Java concurrency, JUnit).
 - Documented the troubleshooting process in the main unit test area so that each team member could perform it efficiently and effectively.
+- Extended the corporate-actions pipeline (dividends, splits) to persist data in the database via a new DAO layer, following the legacy codebase's patterns and Spring wiring.
+- Added unit tests for candle subscription-symbol logic (CandlePrice/CandleAlignment) edge cases.
 
-- Analyse and implement technical requirements for backlog tasks, estimating scope and duration based on size and complexity.
-- Implement code logic and provide the QA team with functional context on code changes to support effective testing.
-- Review team pull requests, focusing on code quality, performance, and maintainability.
-- Support deployments and releases.
+- Analyse, estimate and implement backlog tasks; review pull requests for code quality and performance; support releases.
+
+#### Internal platform: [Parking Service](https://singledev.eu/projects/parking.html) | 2025 – Present
+
+- Designed, built and operate the office parking booking system used by ~80 employees (~100 bookings/week): half-day slots, waitlist queue, Slack notifications, admin audit log.
+- Migrated it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL; set up automated daily backups, off-site copies and a tested restore procedure.
+- Introduced spec-driven, AI-assisted development (Kiro): requirements, design and task breakdown, with characterization tests before refactoring core booking logic.
 
 ### QA Engineer, Devexperts – Porto, Portugal | Aug 2018 – Dec 2022
 
@@ -29,10 +34,7 @@ Ensuring quality and reliability of a complex fintech platform through structure
 - +15% Increased test coverage by 15% through automated tests (Python, Bash), significantly reducing manual effort.
 - Key contributor in a team that met all critical deadlines for product launches.
 
-- Analysed and developed documentation: business/technical requirements, test cases and scenarios.
-- Worked with the QA automation team to adapt test cases, validate automated tests and interpret results.
-- Executed functional testing for new features and regression testing cycles.
-- Developed Bash and Python scripts to automate routine QA tasks.
+- Wrote test cases and requirements docs, ran functional and regression testing, and automated QA tasks with Bash and Python.
 
 ## Projects
 
@@ -40,14 +42,11 @@ Ensuring quality and reliability of a complex fintech platform through structure
 
 Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X, with no manual logging.
 
-### [Parking Service](https://singledev.eu/projects/parking.html) | Web app | 2025 – Present | Spring Boot, PostgreSQL, Vite, Render
-
-Office parking booking with half-day slots, a waitlist queue and Slack notifications.
-
 ## Skills
 
 - **Languages:** Java (21), Swift, Groovy, Bash, Python
 - **Frameworks:** Spring, Spring Boot, REST APIs, Swing, SwiftUI, picocli
+- **Web:** Node.js, Fastify, React
 - **Databases:** SQL, Oracle SQL, PostgreSQL, MySQL, SQLite, Liquibase
 - **Testing:** JUnit 5, Mockito, TDD
 - **Tools:** Git, Maven, Gradle, Continuous Integration/Delivery (CI/CD), GitHub Actions, Linux, JIRA, Splunk, IntelliJ IDEA, Xcode

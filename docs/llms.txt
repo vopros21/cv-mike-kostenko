@@ -11,7 +11,7 @@
 ## Projects
 
 - [HubitHab](https://singledev.eu/projects/hubithab.html): iOS automatic habit tracker (Swift, SwiftUI, HealthKit, Spring Boot)
-- [Parking Service](https://singledev.eu/projects/parking.html): office parking booking web app (Spring Boot, PostgreSQL, Vite, Render)
+- [Parking Service](https://singledev.eu/projects/parking.html): office parking booking system used internally at Devexperts (Node.js/Fastify, React + Vite, PostgreSQL, Resend, Slack, self-hosted Ubuntu VM)
 
 ## Optional
 
