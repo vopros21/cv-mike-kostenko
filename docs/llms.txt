@@ -1,0 +1,20 @@
+# Mike Kostenko – Java Software Engineer
+
+> Java Software Engineer (backend and desktop) in Porto, Portugal, with 8 years in fintech at Devexperts (4+ in QA, then development). Oracle Certified Professional (OCP), Java SE 21. Looking for senior backend Java roles, remote within the EU. Contact: contact@singledev.eu
+
+## CV
+
+- [CV (Markdown)](https://singledev.eu/cv.md): full CV as plain text, same content as the PDF
+- [CV (PDF)](https://singledev.eu/cv.pdf): one-page A4 CV
+- [Website](https://singledev.eu/): profile, experience, skills and education
+
+## Projects
+
+- [HubitHab](https://singledev.eu/projects/hubithab.html): iOS automatic habit tracker (Swift, SwiftUI, HealthKit, Spring Boot)
+- [Parking Service](https://singledev.eu/projects/parking.html): office parking booking web app (Spring Boot, PostgreSQL, Vite, Render)
+
+## Optional
+
+- [Certificates](https://singledev.eu/timeline/): course certificates and the OCP Java SE 21 certificate
+- [GitHub](https://github.com/vopros21)
+- [LinkedIn](https://www.linkedin.com/in/mike-kostenko)
