@@ -217,10 +217,6 @@ body > header:not(.topbar) {        /* project sub-pages use the plain header */
 .contacts svg { width: 16px; height: 16px; flex-shrink: 0; color: var(--faint); }
 .contacts a svg { color: currentColor; }
 
-/* War-protest stamp lives in the sidebar, under contacts */
-.stamp-slot { position: relative; height: 250px; margin-top: 12px; }
-.stamp-slot #nez2 { top: 24px !important; right: auto !important; left: 40px !important; }
-
 /* ---- Content (right) ---- */
 .content { min-width: 0; display: grid; gap: 28px; }
 
@@ -371,7 +367,6 @@ body > footer p { margin: 4px 0; }
   .identity { position: static; }
   .tagline { max-width: none; }
   .facts { max-width: 420px; }
-  .stamp-slot { display: none; }
 }
 
 @media (max-width: 720px) {
@@ -396,7 +391,7 @@ body > footer p { margin: 4px 0; }
 }
 
 @media print {
-  body::before, .topbar, .stamp-slot { display: none; }
+  body::before, .topbar { display: none; }
   .glass, .facts li { background: none !important; box-shadow: none !important; backdrop-filter: none !important; border-color: #ddd; }
   .layout { display: block; padding: 0; }
 }
