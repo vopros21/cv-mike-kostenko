@@ -14,12 +14,13 @@ Java Software Engineer with 3+ years of backend and desktop development and 8 ye
 
 Developing and maintaining modules of a large-scale fintech platform across the lifecycle, from requirements to deployment.
 
-- -83% Cut unit test suite runtime by 83% by introducing concurrent test execution (Java concurrency, JUnit).
-- Documented the troubleshooting process in the main unit test area so that each team member could perform it efficiently and effectively.
+- Cut unit test suite runtime by 83% by introducing concurrent test execution (Java concurrency, JUnit).
+- Wrote the team's troubleshooting guide for unit test failures.
 - Extended the corporate-actions pipeline (dividends, splits) to persist data in the database via a new DAO layer, following the legacy codebase's patterns and Spring wiring.
 - Added unit tests for candle subscription-symbol logic (CandlePrice/CandleAlignment) edge cases.
 
 - Analyse, estimate and implement backlog tasks; review pull requests for code quality and performance; support releases.
+- Provide QA with functional context on code changes.
 
 #### Internal platform: [Parking Service](https://singledev.eu/projects/parking.html) | 2025 – Present
 
@@ -31,7 +32,7 @@ Developing and maintaining modules of a large-scale fintech platform across the 
 
 Ensuring quality and reliability of a complex fintech platform through structured testing and cross-team collaboration.
 
-- +15% Increased test coverage by 15% through automated tests (Python, Bash), significantly reducing manual effort.
+- Increased test coverage by 15% through automated tests (Python, Bash), significantly reducing manual effort.
 - Key contributor in a team that met all critical deadlines for product launches.
 
 - Wrote test cases and requirements docs, ran functional and regression testing, and automated QA tasks with Bash and Python.
