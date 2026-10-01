@@ -41,6 +41,8 @@ const readingTime = md => {
   return Math.max(1, Math.round(words / 200));
 };
 
+async function isFile(p) { try { return (await stat(p)).isFile(); } catch { return false; } }
+
 class BuildError extends Error {}
 const fail = msg => { throw new BuildError(msg); };
 
@@ -82,7 +84,7 @@ async function loadPosts() {
     bySlug.set(slug, file);
 
     posts.push({
-      slug, date,
+      file, slug, date,
       title: String(data.title).trim(),
       summary: String(data.summary).trim(),
       category: data.category,
@@ -91,9 +93,31 @@ async function loadPosts() {
     });
   }
 
-  return posts
+  const published = posts
     .filter(p => !p.draft)
     .sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));
+  for (const post of published) {
+    post.html = marked.parse(post.body).trim();
+    post.images = await imageRefs(post);
+  }
+  return published;
+}
+
+// Images a post uses from blog/posts/images/, found in the rendered HTML so both
+// Markdown ![alt](images/x.png) and raw <img src="images/x.png"> count.
+// External URLs and other paths (e.g. ../images/og.png) are left alone.
+async function imageRefs(post) {
+  const where = `blog/posts/${post.file}`;
+  const refs = new Set();
+  for (const [, , src] of post.html.matchAll(/<img\b[^>]*?\ssrc\s*=\s*(["']?)([^"'\s>]+)\1/gi)) {
+    const clean = decodeURI(src.replace(/&amp;/g, '&').split(/[?#]/)[0]).replace(/^\.\//, '');
+    if (!clean.startsWith('images/')) continue;
+    const rel = path.posix.normalize(clean.slice('images/'.length));
+    if (rel.startsWith('..') || rel === '.' || rel === '') fail(`${where}: image path "${src}" points outside blog/posts/images/`);
+    if (!(await isFile(path.join(IMAGES_DIR, rel)))) fail(`${where}: image "${src}" not found (expected blog/posts/images/${rel})`);
+    refs.add(rel);
+  }
+  return [...refs];
 }
 
 // ---------- page shell (same as docs/projects/parking.html) ----------
@@ -179,7 +203,7 @@ function postPage(post, newer, older) {
                 <p class="post-meta"><time datetime="${post.date}">${formatDate(post.date)}</time>${post.category ? ` ${categoryChip(post.category)}` : ''} <span class="read-time">· ${readingTime(post.body)} min read</span></p>
             </header>
             <article class="prose">
-${marked.parse(post.body).trim()}
+${post.html}
             </article>${nav ? `
             <nav class="post-nav" aria-label="More posts">
                 ${nav}
@@ -229,19 +253,18 @@ async function updateLlms(posts) {
 }
 
 // ---------- build ----------
-async function exists(p) { try { await stat(p); return true; } catch { return false; } }
 
 try {
-  const posts = await loadPosts();          // validate everything before touching docs/
+  const posts = await loadPosts();          // validates posts and image references before touching docs/
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
 
-  if (await exists(IMAGES_DIR)) {
-    const images = (await readdir(IMAGES_DIR)).filter(f => !f.startsWith('.') && !f.startsWith('_'));
-    if (images.length) {
-      await mkdir(path.join(OUT, 'images'));
-      for (const f of images) await cp(path.join(IMAGES_DIR, f), path.join(OUT, 'images', f), { recursive: true });
-    }
+  // Only images referenced by published posts; docs/blog/ was just cleared, so stale ones are gone.
+  const images = [...new Set(posts.flatMap(p => p.images))].sort();
+  for (const rel of images) {
+    const dest = path.join(OUT, 'images', rel);
+    await mkdir(path.dirname(dest), { recursive: true });
+    await cp(path.join(IMAGES_DIR, rel), dest);
   }
 
   await writeFile(path.join(OUT, 'index.html'), indexPage(posts));
@@ -252,7 +275,7 @@ try {
   await writeFile(path.join(OUT, 'feed.xml'), feed(posts));
   await updateLlms(posts);
 
-  console.log(`docs/blog/ written: ${posts.length} post(s)${posts.length ? ' — ' + posts.map(p => p.slug).join(', ') : ''}`);
+  console.log(`docs/blog/ written: ${posts.length} post(s)${posts.length ? ' — ' + posts.map(p => p.slug).join(', ') : ''}, ${images.length} image(s)`);
 } catch (e) {
   if (e instanceof BuildError) { console.error(`Blog build failed: ${e.message}`); process.exit(1); }
   throw e;
