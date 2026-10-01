@@ -4,90 +4,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mike Kostenko - Curriculum Vitae</title>
-    <!-- Add link to your CSS file -->
+    <title>Mike Kostenko — Java Developer</title>
+    <meta name="description" content="Mike Kostenko — Java developer in Porto, Portugal. Oracle Certified Professional, Java SE 21. Backend, fintech, Spring.">
+    <meta name="theme-color" content="#eef1f8" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#0b0f1a" media="(prefers-color-scheme: dark)">
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Mike Kostenko — Java Developer">
+    <meta property="og:description" content="Java developer in Porto. OCP Java SE 21. 8 years building and testing fintech software at Devexperts.">
+    <meta property="og:url" content="https://singledev.eu/">
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    <!-- Lightweight client-side loader that feature-detects and loads polyfills only when necessary -->
-    <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@2/webcomponents-loader.min.js"></script>
-    <!-- Load the element definition -->
-    <script type="module" src="https://cdn.jsdelivr.net/gh/zerodevx/zero-md@1/src/zero-md.min.js"></script>
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 </head>
 
 <body>
-    <header>
-        <!-- Navigation bar, if needed -->
-        <a id="pdf-button" href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    <header class="topbar glass">
+        <a href="#about" class="monogram" aria-label="Mike Kostenko — top">MK</a>
+        <nav class="topnav" aria-label="Sections">
+            <a href="#about">About</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#skills">Skills</a>
+            <a href="#education">Education</a>
+        </nav>
+        <a id="pdf-button" href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg>
+            <span>Download CV</span>
+        </a>
     </header>
-    <main>
-        <div class="cv-card">
-        <!-- Main content of the CV -->
-        <section id="introduction">
+
+    <div class="layout">
+        <!-- ===== Left: sticky identity ===== -->
+        <aside class="identity">
             <h1>Mike Kostenko</h1>
-            <p class="subtitle">Middle Java Developer</p>
-            <zero-md src="cvParts/introduction.md"></zero-md>
-            <div class="contact-row">
-                <a href="mailto:contact@singledev.eu">📧 contact@singledev.eu</a>
-                <span>·</span>
-                <a href="https://github.com/vopros21" target="_blank" style="display:inline-flex; align-items:center; gap:4px;">
-                    <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                    vopros21
-                </a>
-                <span>·</span>
-                <span>📍 Porto, Portugal</span>
-                <span>·</span>
-                <span>🌐 EN — C1 / PT — A2</span>
-            </div>
-        </section>
+            <p class="role">Java Developer</p>
+            <p class="tagline">Backend &amp; desktop Java for a large-scale fintech trading platform.</p>
 
-        <section id="education">
-            <h2>Education</h2>
-            <zero-md src="cvParts/education.md"></zero-md>
-        </section>
+            <ul class="facts">
+                <li><strong>8 yrs</strong><span>at Devexperts</span></li>
+                <li><strong>OCP 21</strong><span>Java SE certified</span></li>
+            </ul>
 
-        <section id="certificates">
-            <h2>Certificates</h2>
-            <a href="timeline/index.html">View Certificates</a>
-        </section>
+            <ul class="contacts">
+                <li>
+                    <a href="mailto:contact@singledev.eu">
+                        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v8H2z M2 4l6 5 6-5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                        contact@singledev.eu
+                    </a>
+                </li>
+                <li>
+                    <a href="https://github.com/vopros21" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+                        vopros21
+                    </a>
+                </li>
+                <li>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.5A5 5 0 0 0 3 6.5C3 10.4 8 15 8 15z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6.5" r="1.8" fill="currentColor"/></svg>
+                    Porto, Portugal
+                </li>
+                <li>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.8 8h12.4M8 1.7c2 2.2 2 10.4 0 12.6M8 1.7c-2 2.2-2 10.4 0 12.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+                    English C1 · Portuguese A2
+                </li>
+            </ul>
 
-        <section id="experience">
-            <h2>Work Experience</h2>
-            <button type="button" class="collapsible">
-                Java Developer in [Jan_2023 ... ] <span class="arrow">▶</span>
-            </button>
-            <div class="content" style="display: block">
-                <zero-md class="resp" src="cvParts/experienceJava23_resp.md"></zero-md>
-                <zero-md class="ach" src="cvParts/experienceJava23_ach.md"></zero-md>
-            </div>
-            <button type="button" class="collapsible">
-                QA Engineer in [Aug_2018 ... Dec_2022] <span class="arrow">▶</span>
-            </button>
-            <div class="content" style="display: block">
-                <zero-md class="resp" src="cvParts/experienceQA23_resp.md"></zero-md>
-                <zero-md class="ach" src="cvParts/experienceQA23_ach.md"></zero-md>
-            </div>
-        </section>
+            <!-- war-protest stamp is injected here by notSupportingStamp.js -->
+            <div id="mainContent" class="stamp-slot"></div>
+        </aside>
 
-        <section id="skills">
-            <h2>Skills</h2>
-            <zero-md src="cvParts/skills.md"></zero-md>
-        </section>
+        <!-- ===== Right: content ===== -->
+        <main class="content">
 
-        <section id="projects">
-            <h2>Projects</h2>
-            <zero-md src="cvParts/projects.md"></zero-md>
-        </section>
-        </div>
-    </main>
-    <footer>
-        <!-- Footer content -->
-        <p>📧 Contact me at: <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
-        <p>Mike Kostenko 2023-2026</p>
-    </footer>
-    <script src="scripts/collapsibleButtons.js"></script>
-    <script src='scripts/notSupportingStamp.js'></script>
+            <section id="about" class="panel glass">
+                <h2>About</h2>
+                <p>Experienced <strong>Java Developer</strong> with solid expertise in backend system development, object-oriented design, and API integration. Skilled in <strong>Java and Spring</strong>, contributing to robust and efficient codebases across various projects. Certified as an <strong>Oracle Certified Professional, Java SE 21</strong>, demonstrating advanced technical knowledge and a commitment to best practices in modern Java development.</p>
+            </section>
+
+            <section id="experience">
+                <h2 class="section-title">Experience</h2>
+
+                <article class="job panel glass">
+                    <div class="job-when">Jan 2023 — Present</div>
+                    <div class="job-body">
+                        <h3>Java Developer <span class="at">· <a href="https://devexperts.com" target="_blank" rel="noopener">Devexperts</a></span></h3>
+                        <p class="lead">Developing and maintaining modules within a large-scale fintech platform, working across the full development lifecycle from requirements to deployment.</p>
+                        <ul class="wins">
+                            <li><span class="stat">−83%</span> Pioneered a concurrency solution in unit tests which decreased running time by 83%.</li>
+                            <li>Documented the troubleshooting process in the main unit test area so that each team member could perform it efficiently and effectively.</li>
+                        </ul>
+                        <ul class="duties">
+                            <li>Analyse and implement technical requirements for backlog tasks, estimating scope and duration based on size and complexity.</li>
+                            <li>Implement code logic and provide the QA team with functional context on code changes to support effective testing.</li>
+                            <li>Review team pull requests, focusing on code quality, performance, and maintainability.</li>
+                            <li>Provide deployment support to ensure highest product quality.</li>
+                        </ul>
+                        <ul class="chips">
+                            <li>Java</li><li>Swing</li><li>Spring</li><li>JUnit</li><li>Mockito</li><li>Gradle</li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="job panel glass">
+                    <div class="job-when">Aug 2018 — Dec 2022</div>
+                    <div class="job-body">
+                        <h3>QA Engineer <span class="at">· <a href="https://devexperts.com" target="_blank" rel="noopener">Devexperts</a></span></h3>
+                        <p class="lead">Ensuring quality and reliability of a complex fintech platform through structured testing and cross-team collaboration.</p>
+                        <ul class="wins">
+                            <li><span class="stat">+15%</span> Increased test coverage through a comprehensive suite of automated tests, significantly reducing manual effort.</li>
+                            <li>Key contributor in a team that met all critical deadlines for product launches.</li>
+                        </ul>
+                        <ul class="duties">
+                            <li>Analysed and developed documentation: business/technical requirements, test cases and scenarios.</li>
+                            <li>Collaborated with the QA automation team to adapt test cases, validate automated tests, and interpret results against functional requirements.</li>
+                            <li>Executed functional testing for new features and regression testing cycles.</li>
+                            <li>Developed Bash and Python scripts to automate routine QA tasks.</li>
+                        </ul>
+                        <ul class="chips">
+                            <li>Bash</li><li>Python</li><li>JIRA</li><li>Splunk</li>
+                        </ul>
+                    </div>
+                </article>
+            </section>
+
+            <section id="projects">
+                <h2 class="section-title">Projects</h2>
+                <div class="cards">
+                    <a class="card panel glass" href="projects/hubithab.html">
+                        <span class="card-meta">iOS app · 2024 — present</span>
+                        <h3>HubitHab <span class="arrow" aria-hidden="true">→</span></h3>
+                        <p>Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X — no manual logging.</p>
+                        <ul class="chips"><li>Swift</li><li>SwiftUI</li><li>HealthKit</li><li>Spring Boot</li></ul>
+                    </a>
+                    <a class="card panel glass" href="projects/parking.html">
+                        <span class="card-meta">Web app · 2025 — present</span>
+                        <h3>Parking Service <span class="arrow" aria-hidden="true">→</span></h3>
+                        <p>Office parking booking with half-day slots, a waitlist queue and Slack notifications.</p>
+                        <ul class="chips"><li>Spring Boot</li><li>PostgreSQL</li><li>Vite</li><li>Render</li></ul>
+                    </a>
+                </div>
+            </section>
+
+            <section id="skills" class="panel glass">
+                <h2>Skills</h2>
+                <dl class="skills">
+                    <dt>Languages</dt>
+                    <dd><ul class="chips"><li class="hi">Java</li><li>Swift</li><li>Groovy</li><li>Bash</li><li>Python</li></ul></dd>
+                    <dt>Frameworks</dt>
+                    <dd><ul class="chips"><li class="hi">Spring</li><li class="hi">Spring Boot</li><li>Swing</li><li>SwiftUI</li><li>picocli</li></ul></dd>
+                    <dt>Databases</dt>
+                    <dd><ul class="chips"><li>Oracle SQL</li><li>PostgreSQL</li><li>MySQL</li><li>SQLite</li></ul></dd>
+                    <dt>Testing</dt>
+                    <dd><ul class="chips"><li>JUnit</li><li>Mockito</li></ul></dd>
+                    <dt>Tools</dt>
+                    <dd><ul class="chips"><li>Maven</li><li>Gradle</li><li>Liquibase</li><li>Git</li><li>JIRA</li><li>Splunk</li><li>IntelliJ IDEA</li><li>Xcode</li><li>VS Code</li></ul></dd>
+                </dl>
+            </section>
+
+            <section id="education" class="panel glass">
+                <h2>Education &amp; Certificates</h2>
+                <ul class="edu">
+                    <li class="featured">
+                        <span class="edu-when">Sep 2025</span>
+                        <div><strong>Oracle Certified Professional: Java SE 21 Developer</strong><span class="muted">Oracle</span></div>
+                    </li>
+                    <li>
+                        <span class="edu-when">Course</span>
+                        <div><strong>GitHub Actions</strong><a href="https://learn.microsoft.com/en-us/collections/n5p4a5z7keznp5" target="_blank" rel="noopener">Microsoft Learn</a></div>
+                    </li>
+                    <li>
+                        <span class="edu-when">Course</span>
+                        <div><strong>GitHub Foundations</strong><a href="https://learn.microsoft.com/en-us/collections/o1njfe825p602p" target="_blank" rel="noopener">Microsoft Learn</a></div>
+                    </li>
+                    <li>
+                        <span class="edu-when">Course</span>
+                        <div><strong>100 Days of SwiftUI</strong><a href="https://www.hackingwithswift.com/100/swiftui" target="_blank" rel="noopener">Hacking with Swift</a></div>
+                    </li>
+                    <li>
+                        <span class="edu-when">Degree</span>
+                        <div><strong>Master's degree</strong><span class="muted">Rostov State University of Transport Communication</span></div>
+                    </li>
+                </ul>
+                <a class="more" href="timeline/index.html">All certificates →</a>
+            </section>
+
+            <footer class="foot">© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></footer>
+        </main>
+    </div>
+
+    <script src="scripts/nav.js"></script>
+    <script src="scripts/notSupportingStamp.js"></script>
 </body>
 
 </html>

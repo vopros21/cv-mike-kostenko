@@ -1,3 +1,0 @@
-- Key Achievements:
-    - Pioneered a concurrency solution in unit tests what decreased running time by 83%.
-    - Documented the troubleshooting process in the main unit test area to ensure that each team member could perform it efficiently and effectively.
