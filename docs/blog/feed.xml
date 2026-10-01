@@ -6,22 +6,5 @@
     <description>Posts by Mike Kostenko, Java Software Engineer in Porto.</description>
     <language>en</language>
     <atom:link href="https://singledev.eu/blog/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 01 Oct 2026 00:00:00 +0000</lastBuildDate>
-    <item>
-      <title>How this blog is built</title>
-      <link>https://singledev.eu/blog/how-this-blog-is-built.html</link>
-      <guid isPermaLink="true">https://singledev.eu/blog/how-this-blog-is-built.html</guid>
-      <pubDate>Thu, 01 Oct 2026 00:00:00 +0000</pubDate>
-      <description>Markdown files, one Node script and GitHub Pages. No framework, no CI, and every generated file is committed.</description>
-      <category>tech</category>
-    </item>
-    <item>
-      <title>Hello from Porto</title>
-      <link>https://singledev.eu/blog/hello-from-porto.html</link>
-      <guid isPermaLink="true">https://singledev.eu/blog/hello-from-porto.html</guid>
-      <pubDate>Sun, 20 Sep 2026 00:00:00 +0000</pubDate>
-      <description>A short introduction, and what this blog will be about.</description>
-      <category>life</category>
-    </item>
   </channel>
 </rss>
