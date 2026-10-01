@@ -139,6 +139,14 @@ body > main.tl-layout {
   min-height: 480px;
   border: 0;
 }
+.open-file {
+  display: inline-block;
+  margin-top: 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.open-file[hidden] { display: none; }
+
 .document-preview-area img {
   display: block;
   width: 100%;

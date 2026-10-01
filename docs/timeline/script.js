@@ -56,6 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Clear preview area
                     documentPreviewArea.innerHTML = '';
+
+                    // Direct link to the file (phones often can't show PDFs inline)
+                    const openFile = document.getElementById('open-file');
+                    if (openFile) {
+                        openFile.href = encodeURI(`files/${selectedDoc.file}`);
+                        openFile.hidden = false;
+                    }
                     
                     // Display the document based on type
                     if (selectedDoc.type === 'pdf') {
