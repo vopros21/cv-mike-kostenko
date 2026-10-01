@@ -1,6 +1,7 @@
 // Highlights the current section in the top navigation while scrolling.
+// Only in-page (#id) links are observed; other links such as Blog are ignored.
 (function () {
-  var links = document.querySelectorAll('.topnav a');
+  var links = document.querySelectorAll('.topnav a[href^="#"]');
   if (!('IntersectionObserver' in window) || !links.length) return;
   var byId = {};
   links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });

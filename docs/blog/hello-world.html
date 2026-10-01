@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, world — Mike Kostenko</title>
+    <meta name="description" content="Why this blog exists, what I plan to write about, and a quick tour of the formatting it supports.">
+    <link rel="canonical" href="https://singledev.eu/blog/hello-world.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Hello, world — Mike Kostenko">
+    <meta property="og:description" content="Why this blog exists, what I plan to write about, and a quick tour of the formatting it supports.">
+    <meta property="og:url" content="https://singledev.eu/blog/hello-world.html">
+    <meta property="og:image" content="https://singledev.eu/images/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="alternate" type="application/rss+xml" title="Mike Kostenko — Blog" href="https://singledev.eu/blog/feed.xml">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header class="topbar glass">
+        <a href="../index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+    <main>
+        <div class="cv-card">
+            <a href="index.html" class="back-link">← All posts</a>
+            <header class="post-header">
+                <h1>Hello, world</h1>
+                <p class="post-meta"><time datetime="2026-10-01">1 Oct 2026</time> <span class="cat cat-tech">tech</span> <span class="read-time">· 1 min read</span></p>
+            </header>
+            <article class="prose">
+<p>This is the first post on the blog. I&#39;ll write here about <strong>Java</strong>, testing, the occasional side project, and life in Porto.</p>
+<h2>What to expect</h2>
+<p>A few topics I have in mind:</p>
+<ul>
+<li>Making slow unit test suites fast again</li>
+<li>Working in a large, long-lived Java/Swing codebase</li>
+<li>Notes from building small internal tools</li>
+<li>Learning Portuguese, slowly</li>
+</ul>
+<p>The CV itself lives on the <a href="../index.html">main page</a>, and every post is also available as plain Markdown for tools and LLMs.</p>
+<h2>Code</h2>
+<p>Inline code looks like <code>List.of(1, 2, 3)</code>. A fenced block:</p>
+<pre><code class="language-java">record Booking(String user, LocalDate day, Slot slot) {
+    boolean overlaps(Booking other) {
+        return day.equals(other.day) &amp;&amp; (slot == Slot.FULL || other.slot == Slot.FULL || slot == other.slot);
+    }
+}
+</code></pre>
+<h3>A quote</h3>
+<blockquote>
+<p>Make it work, make it right, make it fast.</p>
+<p>— Kent Beck</p>
+</blockquote>
+<h3>A table</h3>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Time</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AM</td>
+<td>08:00 – 13:00</td>
+<td>Morning half-day</td>
+</tr>
+<tr>
+<td>PM</td>
+<td>13:00 – 19:00</td>
+<td>Afternoon half-day</td>
+</tr>
+<tr>
+<td>Full</td>
+<td>08:00 – 19:00</td>
+<td>Blocks both half-days</td>
+</tr>
+</tbody></table>
+<h3>An image</h3>
+<p><img src="images/hello-world.svg" alt="A small diagram: Markdown post, build script, static HTML"></p>
+<p>That&#39;s it for now. Thanks for reading.</p>
+            </article>
+        </div>
+    </main>
+    <footer>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+    </footer>
+</body>
+
+</html>
