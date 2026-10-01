@@ -79,6 +79,7 @@
          background: linear-gradient(160deg, rgba(96,140,255,0.06), rgba(170,120,255,0.05)); }
   .sub h4 { font-size: 9.2pt; margin: 0 0 0.6mm; }
   .sub .when { font-size: 8.2pt; }
+  .nw { white-space: nowrap; }
 
   /* ---- Projects (stacked, so they never interleave) ---- */
   .project { border: 1px solid var(--line); border-radius: 2.5mm; padding: 1.8mm 3.2mm; margin-bottom: 1.6mm;
@@ -133,7 +134,7 @@
           <h4>Internal platform: <a href="https://singledev.eu/projects/parking.html">Parking Service</a> <span class="when">| 2025 – Present</span></h4>
           <ul class="duties">
             <li>Designed, built and operate the office parking booking system used by ~80 employees (~100 bookings/week): half-day slots, waitlist queue, Slack notifications, admin audit log.</li>
-            <li>Migrated it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL; set up automated daily backups, off-site copies and a tested restore procedure.</li>
+            <li>Migrated it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL; set up automated daily backups, <span class="nw">off-site</span> copies and a tested restore procedure.</li>
             <li>Introduced spec-driven, AI-assisted development (Kiro): requirements, design and task breakdown, with characterization tests before refactoring core booking logic.</li>
           </ul>
         </div>
