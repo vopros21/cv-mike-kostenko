@@ -4,94 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Year Resolutions 2025</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        .checkbox-container {
-            margin-bottom: 10px;
-        }
-
-        label {
-            cursor: pointer;
-        }
-
-        .strikethrough {
-            text-decoration: line-through;
-        }
-    </style>
+    <title>New Year Resolutions — Mike Kostenko</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 </head>
 
 <body>
-    <h1>New Year Resolutions 2025</h1>
-    <form id="checkboxForm">
-        <div class="checkbox-container">
-            <input type="checkbox" id="option1" name="option1" value="Option 1" checked>
-            <label for="1">1. Marathon under 3:30</label>
+    <header class="topbar glass">
+        <a href="index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+    <main>
+        <div class="cv-card">
+            <section>
+                <a href="index.html" style="font-size: 0.9rem;">← Back</a>
+                <h1 style="margin-top: 16px;">New Year Resolutions <span class="current-year"></span></h1>
+                <p class="subtitle">Tick them off as they happen.</p>
+
+                <h2>Goals</h2>
+                <form id="checkboxForm" class="resolutions">
+                    <label for="option1"><input type="checkbox" id="option1" name="option1"> Marathon under 3:30</label>
+                    <label for="option2"><input type="checkbox" id="option2" name="option2"> Published app in AppStore</label>
+                    <label for="option3"><input type="checkbox" id="option3" name="option3"> Middle Developer position (E5)</label>
+                    <label for="option4"><input type="checkbox" id="option4" name="option4"> Tattoo</label>
+                    <label for="option5"><input type="checkbox" id="option5" name="option5"> Reduce debt: 203,845.66/203,075.12</label>
+                    <label for="option6"><input type="checkbox" id="option6" name="option6"> Get fitter to 70kg (80 now)</label>
+                </form>
+            </section>
         </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option2" name="option2" value="Option 2">
-            <label for="option2">2. Published app in AppStore</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option3" name="option3" value="Option 3">
-            <label for="option3">3. Middle Developer position (E5)</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option4" name="option4" value="Option 4">
-            <label for="option4">4. Tattoo</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option5" name="option5" value="Option 5">
-            <label for="option5">5. Reduce debt: 203,845.66/203,075.12</label>
-        </div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="option6" name="option6" value="Option 6">
-            <label for="option6">6. Get fitter to 70kg(80 now)</label>
-        </div>
-    </form>
+    </main>
+    <footer>
+        <p>© 2023–<span class="current-year"></span> Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+    </footer>
 
     <script>
-        // Function to save the state of checkboxes to localStorage
-        function saveCheckboxState() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="option"]');
-            checkboxes.forEach(checkbox => {
-                localStorage.setItem(checkbox.id, checkbox.checked);
-                toggleStrikethrough(checkbox); // Apply strikethrough based on state
-            });
+        const year = new Date().getFullYear();
+        document.querySelectorAll('.current-year').forEach(el => { el.textContent = year; });
+        document.title = `New Year Resolutions ${year} — Mike Kostenko`;
+
+        // Checkbox state persists per browser in localStorage
+        const checkboxes = document.querySelectorAll('#checkboxForm input[type="checkbox"]');
+
+        function markDone(checkbox) {
+            checkbox.closest('label').classList.toggle('done', checkbox.checked);
         }
 
-        // Function to load the state of checkboxes from localStorage
-        function loadCheckboxState() {
-            const checkboxes = document.querySelectorAll('input[type="checkbox"][id^="option"]');
-            checkboxes.forEach(checkbox => {
-                const savedState = localStorage.getItem(checkbox.id);
-                checkbox.checked = savedState === 'true'; // Convert string to boolean
-                toggleStrikethrough(checkbox); // Apply strikethrough based on state
-            });
-        }
+        checkboxes.forEach(checkbox => {
+            try {
+                checkbox.checked = localStorage.getItem(checkbox.id) === 'true';
+            } catch (e) { /* storage unavailable */ }
+            markDone(checkbox);
 
-        // Function to toggle strikethrough on labels
-        function toggleStrikethrough(checkbox) {
-            const label = document.querySelector(`label[for="${checkbox.id}"]`);
-            if (checkbox.checked) {
-                label.classList.add('strikethrough');
-            } else {
-                label.classList.remove('strikethrough');
-            }
-        }
-
-        // Attach event listeners and initialize states
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCheckboxState(); // Load saved states on page load
-
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', saveCheckboxState); // Save state on change
-                checkbox.addEventListener('change', () => toggleStrikethrough(checkbox)); // Toggle strikethrough on change
+            checkbox.addEventListener('change', () => {
+                try {
+                    localStorage.setItem(checkbox.id, checkbox.checked);
+                } catch (e) { /* storage unavailable */ }
+                markDone(checkbox);
             });
         });
     </script>
