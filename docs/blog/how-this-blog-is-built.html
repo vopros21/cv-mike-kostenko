@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How this blog is built — Mike Kostenko</title>
+    <meta name="description" content="Markdown files, one Node script and GitHub Pages. No framework, no CI, and every generated file is committed.">
+    <link rel="canonical" href="https://singledev.eu/blog/how-this-blog-is-built.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="How this blog is built — Mike Kostenko">
+    <meta property="og:description" content="Markdown files, one Node script and GitHub Pages. No framework, no CI, and every generated file is committed.">
+    <meta property="og:url" content="https://singledev.eu/blog/how-this-blog-is-built.html">
+    <meta property="og:image" content="https://singledev.eu/images/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="alternate" type="application/rss+xml" title="Mike Kostenko — Blog" href="https://singledev.eu/blog/feed.xml">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header class="topbar glass">
+        <a href="../index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+    <main>
+        <div class="cv-card">
+            <a href="index.html" class="back-link">← All posts</a>
+            <header class="post-header">
+                <h1>How this blog is built</h1>
+                <p class="post-meta"><time datetime="2026-10-01">1 Oct 2026</time> <span class="cat cat-tech">tech</span> <span class="read-time">· 2 min read</span></p>
+            </header>
+            <article class="prose">
+<p>This site started as a one-page CV. When I wanted a place to write longer notes, I didn&#39;t want to add a framework or a deployment pipeline for a handful of posts. So the blog follows the same pattern the CV already uses: a small Node script generates static files, and those files are committed next to the rest of the site.</p>
+<h2>The pipeline</h2>
+<p><img src="images/hello-world.svg" alt="Markdown posts go through build.mjs into docs/blog/"></p>
+<p>Each post is a Markdown file in <code>blog/posts/</code> with a few lines of front matter:</p>
+<pre><code class="language-yaml">---
+title: How this blog is built
+date: 2026-10-01
+summary: One sentence for the index, the feed and link previews.
+category: tech
+---
+</code></pre>
+<p>Running <code>npm run build</code> reads every post, renders it with <a href="https://marked.js.org/">marked</a>, and writes:</p>
+<ul>
+<li>an index page, sorted newest first</li>
+<li>one HTML page per post, with Open Graph tags and a canonical URL</li>
+<li>a plain <code>.md</code> copy of every post, for tools and LLMs</li>
+<li>an RSS feed</li>
+</ul>
+<p>GitHub Pages then serves the <code>docs/</code> folder as it is.</p>
+<h2>Small rules that save time later</h2>
+<p>The build is strict on purpose. It stops with a clear message instead of publishing something broken:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Missing title, date or summary</td>
+<td>Build fails</td>
+</tr>
+<tr>
+<td>Two posts with the same slug</td>
+<td>Build fails</td>
+</tr>
+<tr>
+<td>Image referenced but not on disk</td>
+<td>Build fails</td>
+</tr>
+<tr>
+<td><code>draft: true</code></td>
+<td>Post is skipped</td>
+</tr>
+</tbody></table>
+<p>It is also deterministic: no timestamps in the output, so rebuilding without changes produces no diff, and <code>git status</code> only shows what actually changed.</p>
+<blockquote>
+<p>The best build step is the one you can run twice and forget about.</p>
+</blockquote>
+<h2>Why not a static site generator?</h2>
+<p>For a few posts a year, a script of under 300 lines that I fully understand is easier to live with than a toolchain I have to keep updated. If the blog grows, swapping it for a real generator later is straightforward: the posts are plain Markdown either way.</p>
+            </article>
+            <nav class="post-nav" aria-label="More posts">
+                <a class="older" href="hello-from-porto.html"><span>← Older</span>Hello from Porto</a>
+            </nav>
+        </div>
+    </main>
+    <footer>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="index.html">Blog</a></p>
+    </footer>
+</body>
+
+</html>

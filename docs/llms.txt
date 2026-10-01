@@ -16,7 +16,8 @@
 <!-- blog:start -->
 ## Blog
 
-- No posts yet.
+- [How this blog is built](https://singledev.eu/blog/how-this-blog-is-built.md): Markdown files, one Node script and GitHub Pages. No framework, no CI, and every generated file is committed.
+- [Hello from Porto](https://singledev.eu/blog/hello-from-porto.md): A short introduction, and what this blog will be about.
 <!-- blog:end -->
 
 ## Optional
