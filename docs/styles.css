@@ -326,6 +326,8 @@ section > p:last-child { margin-bottom: 0; }
 /* ---- Projects ---- */
 #projects .section-title { margin-bottom: 16px; }
 .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+/* an odd card out spans the row instead of sitting alone; the phone layout is one column anyway */
+.cards > .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .card {
   display: flex; flex-direction: column; gap: 8px;
   padding: 22px 24px;

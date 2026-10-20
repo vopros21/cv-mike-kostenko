@@ -10,9 +10,9 @@
 
 ## Projects
 
-- [HubitHab](https://singledev.eu/projects/hubithab.html): iOS automatic habit tracker (Swift, SwiftUI, HealthKit, Spring Boot)
-- [Parking Service](https://singledev.eu/projects/parking.html): office parking booking system used internally at Devexperts (Node.js/Fastify, React + Vite, PostgreSQL, Resend, Slack, self-hosted Ubuntu VM)
 - [PNCT Territories Map](https://singledev.eu/projects/pnct.html): interactive map of Portugal's PNCT-eligible territories with Idealista property-search links (TypeScript, MapLibre GL, Vite, Python data pipeline, Playwright, Cloudflare Pages); live at https://pnct.singledev.eu, source at https://github.com/singledev-eu/pnct-map
+- [Parking Service](https://singledev.eu/projects/parking.html): office parking booking system used internally at Devexperts (Node.js/Fastify, React + Vite, PostgreSQL, Resend, Slack, self-hosted Ubuntu VM)
+- [HubitHab](https://singledev.eu/projects/hubithab.html): iOS automatic habit tracker (Swift, SwiftUI, HealthKit, Spring Boot)
 
 <!-- blog:start -->
 ## Blog

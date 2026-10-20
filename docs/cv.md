@@ -39,19 +39,19 @@ Ensuring quality and reliability of a complex fintech platform through structure
 
 ## Projects
 
-### [HubitHab](https://singledev.eu/projects/hubithab.html) | iOS app | 2024 – Present | Swift, SwiftUI, HealthKit, Spring Boot
-
-Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X, with no manual logging.
-
 ### [PNCT Territories Map](https://singledev.eu/projects/pnct.html) | Web app | 2026 – Present | TypeScript, MapLibre GL, Vite, Python, Playwright, Cloudflare Pages
 
 Interactive map of Portugal's PNCT-eligible territories, with Idealista property-search links for each area.
 
+### [HubitHab](https://singledev.eu/projects/hubithab.html) | iOS app | 2024 – Present | Swift, SwiftUI, HealthKit, Spring Boot
+
+Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X, with no manual logging.
+
 ## Skills
 
-- **Languages:** Java (21), Swift, Groovy, Bash, Python
+- **Languages:** Java (21), Swift, Groovy, Bash, Python, TypeScript
 - **Frameworks:** Spring, Spring Boot, REST APIs, Swing, SwiftUI, picocli
-- **Web:** Node.js, Fastify, React
+- **Web:** Node.js, Fastify, React, MapLibre GL
 - **Databases:** SQL, Oracle SQL, PostgreSQL, MySQL, SQLite, Liquibase
 - **Testing:** JUnit 5, Mockito, TDD
 - **Tools:** Git, Maven, Gradle, Continuous Integration/Delivery (CI/CD), GitHub Actions, Linux, JIRA, Splunk, IntelliJ IDEA, Xcode
