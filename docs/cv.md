@@ -43,6 +43,10 @@ Ensuring quality and reliability of a complex fintech platform through structure
 
 Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X, with no manual logging.
 
+### [PNCT Territories Map](https://singledev.eu/projects/pnct.html) | Web app | 2026 – Present | TypeScript, MapLibre GL, Vite, Python, Playwright, Cloudflare Pages
+
+Interactive map of Portugal's PNCT-eligible territories, with Idealista property-search links for each area.
+
 ## Skills
 
 - **Languages:** Java (21), Swift, Groovy, Bash, Python
