@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNCT Territories Map — Mike Kostenko</title>
+    <meta property="og:image" content="https://singledev.eu/images/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header class="topbar glass">
+        <a href="../index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+    <main>
+        <div class="cv-card">
+            <section>
+                <a href="../index.html" style="font-size: 0.9rem;">← Back</a>
+                <h1 style="margin-top: 16px;">PNCT Territories Map — Interactive Map of Portugal</h1>
+                <p class="subtitle">Web app · 2026–present · <a href="https://pnct.singledev.eu" target="_blank">pnct.singledev.eu</a> · <a href="https://github.com/singledev-eu/pnct-map" target="_blank">source (MIT)</a></p>
+
+                <h2>Overview</h2>
+                <p>Interactive map of Portugal that highlights the territories eligible under the PNCT programme (based on the official 2026-02-04 list), with links to matching Idealista property searches for each area. Selection depends on zoom: concelhos at country zoom, parishes when zoomed in, plus an "Only PNCT" focus mode. A protected-areas overlay (RNAP + Natura 2000) shows the % of each parish under protection. PT/EN language toggle (including basemap labels) and Auto/Light/Dark theme.</p>
+
+                <h2>Tech Stack</h2>
+                <p>TypeScript, MapLibre GL, Vite; Python (GeoPandas, Shapely) data pipeline; Vitest, pytest and Playwright tests; hosted on Cloudflare Pages.</p>
+
+                <h2>Architecture</h2>
+                <p>No backend: an offline data pipeline reprojects and simplifies the geodata into static files that the app loads directly. Mobile-polished (iPhone Safari safe areas, collapsible legend) with shape-aware camera limits. Covered by an e2e test suite and shipped as tagged releases (currently v0.6.0).</p>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="../blog/">Blog</a></p>
+    </footer>
+</body>
+
+</html>
