@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prazo — Mike Kostenko</title>
+    <meta property="og:image" content="https://singledev.eu/images/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <header class="topbar glass">
+        <a href="../index.html" class="monogram">MK</a>
+        <span style="flex:1"></span>
+        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    </header>
+    <main>
+        <div class="cv-card">
+            <section>
+                <a href="../index.html" style="font-size: 0.9rem;">← Back</a>
+                <h1 style="margin-top: 16px;">Prazo — Deadline Reminders for Portugal</h1>
+                <p class="subtitle">Telegram bot · 2026–present · <a href="https://t.me/prazo_pt_bot" target="_blank">Open in Telegram</a></p>
+
+                <h2>Overview</h2>
+                <p>Prazo reminds people living in Portugal of official deadlines: car tax (IUC), car inspection (IPO), property tax (IMI), IRS and e-fatura validation. A short onboarding captures what applies to each person, then reminders arrive 14 days before, 3 days before and on the day — in English, each with a link to the official source.</p>
+
+                <h2>Tech Stack</h2>
+                <p>Java 21, Spring Boot, PostgreSQL with Flyway migrations, Telegram Bot API (long polling). Self-hosted on a Raspberry Pi as a systemd service with nightly PostgreSQL backups.</p>
+
+                <h2>Architecture</h2>
+                <p>A rule-based deadline engine keeps the law out of the code: each year's obligations live in self-contained YAML files, so changing a deadline means editing data, not Java. Occurrences are generated per user from their profile, and reminders are queued in PostgreSQL and sent with retry and backoff. The bot runs by long polling, so the Pi needs no inbound ports; nightly <code>pg_dump</code> backups are copied off the device.</p>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="../blog/">Blog</a></p>
+    </footer>
+</body>
+
+</html>
