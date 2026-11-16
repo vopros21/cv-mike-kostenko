@@ -6,6 +6,7 @@
       "system": "prazo",
       "value": null,
       "sentence": "Prazo is reminding {value} people about Portuguese deadlines.",
+      "sentenceOne": "Prazo is reminding {value} person about Portuguese deadlines.",
       "asOf": null,
       "public": true
     },
@@ -14,6 +15,7 @@
       "system": "pnct",
       "value": null,
       "sentence": "The PNCT map had {value} visitors in {month}.",
+      "sentenceOne": "The PNCT map had {value} visitor in {month}.",
       "asOf": null,
       "public": true
     },

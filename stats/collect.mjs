@@ -6,6 +6,11 @@
 //   node stats/collect.mjs --out x.json    # write the JSON elsewhere
 //   node stats/collect.mjs --html x.html   # bake into another copy of index.html
 //   node stats/collect.mjs --from y.json   # skip the sources, render an existing live.json
+//   node stats/collect.mjs --check-cf      # verify the Cloudflare query against the live schema
+//
+// Environment (see README, "Live figures"): CF_API_TOKEN, CF_ACCOUNT_TAG, CF_SITE_TAG for PNCT;
+// Prazo is read with psql as the role cv_stats over the local socket (PRAZO_DB_ROLE, PRAZO_DB,
+// PRAZO_UNIT override the defaults cv_stats, prazo, prazo.service).
 //
 // After writing the JSON it rewrites, in index.html:
 //   - the <!-- live:start --> ... <!-- live:end --> region: the "Right now" sentences
@@ -25,6 +30,8 @@
 //   - "public" is decided here, not by the source. Parking metrics stay private until
 //     Devexperts signs off on publishing them.
 import { readFile, writeFile, rename, mkdir } from 'node:fs/promises';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -33,7 +40,9 @@ const DEFAULT_OUT = path.join(here, '..', 'docs', 'data', 'live.json');
 const DEFAULT_HTML = path.join(here, '..', 'docs', 'index.html');
 const SOURCE_TIMEOUT_MS = 15_000;
 
-// ---------- helpers (plumbing, ready to use) ----------
+// ---------- helpers ----------
+
+const execFileP = promisify(execFile);
 
 /** fetch() with a timeout; throws on non-2xx. */
 async function fetchWithTimeout(url, options = {}, timeoutMs = SOURCE_TIMEOUT_MS) {
@@ -42,7 +51,7 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = SOURCE_TIMEOUT_MS
   return res;
 }
 
-/** Runs a query against the Cloudflare GraphQL Analytics API. Needs CF_API_TOKEN (Analytics:Read). */
+/** Runs a query against the Cloudflare GraphQL Analytics API. Needs CF_API_TOKEN (Account Analytics: Read). */
 async function cloudflareGraphQL(query, variables) {
   const token = process.env.CF_API_TOKEN;
   if (!token) throw new Error('CF_API_TOKEN is not set');
@@ -56,88 +65,127 @@ async function cloudflareGraphQL(query, variables) {
   return json.data;
 }
 
-/** HEAD/GET a URL; resolves true when it answers 2xx within the timeout, false otherwise. */
-async function isUp(url) {
-  try { await fetchWithTimeout(url, { method: 'GET', redirect: 'follow' }, 10_000); return true; }
-  catch { return false; }
+/** Runs one read-only query as the cv_stats role over the local socket; returns psql's unaligned output. */
+async function psqlCvStats(sql) {
+  const { stdout } = await execFileP('psql', ['-X', '-At', '-v', 'ON_ERROR_STOP=1',
+    '-U', process.env.PRAZO_DB_ROLE ?? 'cv_stats', '-d', process.env.PRAZO_DB ?? 'prazo', '-c', sql],
+    { timeout: SOURCE_TIMEOUT_MS });
+  return stdout.trim();
 }
 
-/** First and last instant (UTC) of the previous calendar month. */
-function previousMonth(now = new Date()) {
-  const start = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1));
-  const end = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1) - 1);
-  return { start, end };
+/** Midnight Europe/Lisbon at the start of the given month (month may be 0 or 13: Date rolls it over). */
+function lisbonMonthStart(year, month) {
+  const guess = new Date(Date.UTC(year, month - 1, 1));
+  // Lisbon is UTC+0 or UTC+1 and never changes offset on the 1st, so the offset at the UTC guess holds.
+  const name = new Intl.DateTimeFormat('en', { timeZone: 'Europe/Lisbon', timeZoneName: 'longOffset' })
+    .formatToParts(guess).find(p => p.type === 'timeZoneName').value;          // "GMT", "GMT+01:00"
+  const m = name.match(/GMT([+-])(\d{2}):(\d{2})/);
+  const offsetMin = m ? (m[1] === '+' ? 1 : -1) * (Number(m[2]) * 60 + Number(m[3])) : 0;
+  return new Date(guess.getTime() - offsetMin * 60_000);
+}
+
+/** The previous full calendar month in Europe/Lisbon: { key: "2026-10", start, end } (end exclusive). */
+function previousLisbonMonth(now = new Date()) {
+  const [y, m] = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit' })
+    .format(now).split('-').map(Number);
+  const start = lisbonMonthStart(y, m - 1);
+  const end = lisbonMonthStart(y, m);
+  const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit' }).format(start);
+  return { key, start, end };
 }
 
 // ---------- sources: one async function per metric ----------
-// Each returns { value: number|null, asOf?: ISO string }. asOf defaults to "now" when value is set.
+// Each gets the previous live.json (or null) and returns { value: number|null, asOf?: ISO string }.
+// asOf defaults to "now" when value is set.
 
 async function prazoActiveUsers() {
-  // TODO(prazo): count users with at least one enabled obligation, e.g. via a read-only
-  // PostgreSQL role on the Pi:
-  //   SELECT count(DISTINCT user_id) FROM user_obligation WHERE enabled;
-  // or expose a token-protected /internal/stats endpoint from the Spring Boot app.
-  return { value: null };
+  // People Prazo is reminding, from the aggregate view public_stats in Prazo's database
+  // (migration V5 in singledev-eu/prazo; definition in its comment and in the README here):
+  // finished onboarding, at least one obligation, and not blocked/deactivated on Telegram.
+  const out = await psqlCvStats('SELECT people_reminded FROM public_stats');
+  if (!/^\d+$/.test(out)) throw new Error(`unexpected output from public_stats: "${out.slice(0, 40)}"`);
+  return { value: Number(out) };
 }
 
-async function pnctVisitorsMonth() {
-  // TODO(pnct): unique visitors to pnct.singledev.eu last calendar month, from Cloudflare
-  // Web Analytics. Needs CF_API_TOKEN and CF_ZONE_OR_SITE_TAG (zone tag for the zone-level
-  // httpRequests datasets, or the Web Analytics site tag for rumPageloadEventsAdaptiveGroups).
-  // Sketch (Web Analytics, check field names against the current schema before relying on it):
-  //
-  //   const { start, end } = previousMonth();
-  //   const data = await cloudflareGraphQL(`query ($account: String!, $site: String!, $from: Time!, $to: Time!) {
-  //     viewer { accounts(filter: { accountTag: $account }) {
-  //       rumPageloadEventsAdaptiveGroups(limit: 1, filter: { siteTag: $site, datetime_geq: $from, datetime_leq: $to }) {
-  //         sum { visits }
-  //       } } } }`,
-  //     { account: process.env.CF_ACCOUNT_ID, site: process.env.CF_ZONE_OR_SITE_TAG,
-  //       from: start.toISOString(), to: end.toISOString() });
-  //   const value = data.viewer.accounts[0]?.rumPageloadEventsAdaptiveGroups[0]?.sum.visits ?? null;
-  //   return { value, asOf: end.toISOString() };   // asOf drives "{month}" in the sentence
-  void cloudflareGraphQL; void previousMonth;
-  return { value: null };
+const PNCT_QUERY = `query PnctVisits($accountTag: string!, $siteTag: string!, $start: Time!, $end: Time!) {
+  viewer {
+    accounts(filter: { accountTag: $accountTag }) {
+      rumPageloadEventsAdaptiveGroups(limit: 1, filter: { siteTag: $siteTag, datetime_geq: $start, datetime_lt: $end }) {
+        sum { visits }
+      }
+    }
+  }
+}`;
+
+async function pnctVisitorsMonth(previous) {
+  // Visits to pnct.singledev.eu in the previous full calendar month (Europe/Lisbon), from
+  // Cloudflare Web Analytics. A month's figure doesn't change once the month is over, so the
+  // value already in live.json is reused while it is for the same month.
+  const month = previousLisbonMonth();
+  const asOf = new Date(month.end.getTime() - 1).toISOString();   // last instant of that month
+  const cached = previous?.metrics?.find(m => m.id === 'pnct_visitors_month');
+  if (cached && isNumber(cached.value) && cached.asOf === asOf) return { value: cached.value, asOf };
+
+  const { CF_ACCOUNT_TAG: accountTag, CF_SITE_TAG: siteTag } = process.env;
+  if (!accountTag || !siteTag) throw new Error('CF_ACCOUNT_TAG and CF_SITE_TAG must be set');
+  const data = await cloudflareGraphQL(PNCT_QUERY,
+    { accountTag, siteTag, start: month.start.toISOString(), end: month.end.toISOString() });
+  const visits = data?.viewer?.accounts?.[0]?.rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits;
+  if (!isNumber(visits)) throw new Error('no visits in the Cloudflare response (wrong account or site tag?)');
+  return { value: visits, asOf };
 }
 
 async function uptime30d() {
   // TODO(uptime): share of passed health checks over the last 30 days, in percent (e.g. 99.8).
-  // Needs a history; one option is an Uptime Kuma instance on the Pi and its API, another is
-  // appending each checkHealth() result below to a local log and computing the ratio here.
+  // Needs a history (e.g. Uptime Kuma on the Pi, or a log of checkHealth() results). Hidden until then.
   return { value: null };
 }
 
 async function parkingActiveUsers() {
-  // TODO(parking): distinct users with a booking in the last 30 days. Private metric:
-  // stays "public": false until Devexperts approves publishing it.
+  // Not collected: the Pi can't reach the company network. Private metric ("public": false)
+  // until Devexperts approves publishing it.
   return { value: null };
 }
 
 async function parkingBookingsWeek() {
-  // TODO(parking): bookings in the previous ISO week. Private metric, see above.
+  // Not collected, see parkingActiveUsers.
   return { value: null };
 }
 
 // ---------- health checks: one per system ----------
 // Each returns 'running' | 'degraded' | null (null = not checked; the site keeps its static text).
 
-async function checkHealth(system) {
-  // TODO(health): wire up a real check per system, for example:
-  //   pnct:    isUp('https://pnct.singledev.eu/')
-  //   prazo:   a heartbeat the bot writes to PostgreSQL every few minutes, or Telegram getMe
-  //   parking: the service's /health endpoint from inside the company network (if allowed)
-  // and return (await isUp(url)) ? 'running' : 'degraded'.
-  void isUp; void system;
-  return null;
-}
+const HEALTH = {
+  /** Running if the Prazo systemd unit on this machine is active. */
+  async prazo() {
+    try {
+      await execFileP('systemctl', ['is-active', '--quiet', process.env.PRAZO_UNIT ?? 'prazo.service'], { timeout: 10_000 });
+      return 'running';
+    } catch (e) {
+      if (e.code === 'ENOENT') return null;           // no systemd here (e.g. a laptop): not checked
+      return 'degraded';                              // non-zero exit: inactive, failed or unknown
+    }
+  },
+  /** Running if https://pnct.singledev.eu answers 200 within 10 s. */
+  async pnct() {
+    try {
+      const res = await fetch('https://pnct.singledev.eu/', { redirect: 'follow', signal: AbortSignal.timeout(10_000) });
+      return res.status === 200 ? 'running' : 'degraded';
+    } catch {
+      return 'degraded';
+    }
+  },
+};
 
 // ---------- registry ----------
 
 const METRICS = [
   { id: 'prazo_active_users', system: 'prazo', public: true, source: prazoActiveUsers,
-    sentence: 'Prazo is reminding {value} people about Portuguese deadlines.' },
+    sentence: 'Prazo is reminding {value} people about Portuguese deadlines.',
+    sentenceOne: 'Prazo is reminding {value} person about Portuguese deadlines.' },
   { id: 'pnct_visitors_month', system: 'pnct', public: true, source: pnctVisitorsMonth,
-    sentence: 'The PNCT map had {value} visitors in {month}.' },
+    sentence: 'The PNCT map had {value} visitors in {month}.',
+    sentenceOne: 'The PNCT map had {value} visitor in {month}.' },
   { id: 'uptime_30d', system: null, public: true, source: uptime30d,
     sentence: 'Over the last 30 days, {value}% of health checks on my public systems passed.' },
   { id: 'parking_active_users', system: 'parking', public: false, source: parkingActiveUsers,
@@ -146,11 +194,11 @@ const METRICS = [
     sentence: 'The office parking service took {value} bookings last week.' },
 ];
 
-// Status used when a system has no health check yet ("development" is never checked).
+// Status shown when a system isn't checked: hubithab is in development, parking is out of reach.
 const SYSTEMS = [
   { id: 'prazo', status: 'running' },
   { id: 'pnct', status: 'running' },
-  { id: 'parking', status: 'running' },
+  { id: 'parking', status: 'running', unchecked: true },
   { id: 'hubithab', status: 'development', unchecked: true },
 ];
 
@@ -167,25 +215,26 @@ async function runSource(name, fn) {
 
 const isNumber = v => typeof v === 'number' && Number.isFinite(v);
 
-async function collect() {
+async function collect(previous) {
   const now = new Date().toISOString();
 
   const metrics = await Promise.all(METRICS.map(async m => {
-    const r = await runSource(m.id, m.source);
+    const r = await runSource(m.id, () => m.source(previous));
     const value = r && isNumber(r.value) ? r.value : null;
     return {
       id: m.id,
       system: m.system,
       value,
       sentence: m.sentence,
+      ...(m.sentenceOne ? { sentenceOne: m.sentenceOne } : {}),
       asOf: value === null ? null : (r.asOf ?? now),
       public: m.public,
     };
   }));
 
   const systems = await Promise.all(SYSTEMS.map(async s => {
-    if (s.unchecked) return { id: s.id, status: s.status, checkedAt: null };
-    const status = await runSource(`health:${s.id}`, () => checkHealth(s.id));
+    if (s.unchecked || !HEALTH[s.id]) return { id: s.id, status: s.status, checkedAt: null };
+    const status = await runSource(`health:${s.id}`, HEALTH[s.id]);
     return status
       ? { id: s.id, status, checkedAt: new Date().toISOString() }
       : { id: s.id, status: s.status, checkedAt: null };
@@ -195,6 +244,39 @@ async function collect() {
   // generatedAt stays null while nothing is measured, so the site never claims "updated just now"
   // for an empty file.
   return { generatedAt: anything ? now : null, metrics, systems };
+}
+
+// ---------- --check-cf: verify the PNCT query against the live GraphQL schema ----------
+
+/** Walks the schema by introspection (no remembered field names) and runs the query once. */
+async function checkCloudflare() {
+  const unwrap = t => { while (t && t.ofType) t = t.ofType; return t; };
+  const typeQuery = `query T($name: String!) { __type(name: $name) {
+    fields { name args { name type { name kind ofType { name kind ofType { name kind } } } }
+             type { name kind ofType { name kind ofType { name kind ofType { name kind } } } } }
+    inputFields { name } } }`;
+  const type = async name => (await cloudflareGraphQL(typeQuery, { name })).__type;
+  const field = (t, name, where) => {
+    const f = t?.fields?.find(x => x.name === name);
+    if (!f) throw new Error(`field "${name}" not found on ${where}`);
+    return f;
+  };
+
+  const root = (await cloudflareGraphQL('{ __schema { queryType { name } } }')).__schema.queryType.name;
+  const viewer = unwrap(field(await type(root), 'viewer', root).type).name;
+  const account = unwrap(field(await type(viewer), 'accounts', viewer).type).name;
+  const rum = field(await type(account), 'rumPageloadEventsAdaptiveGroups', account);
+  const group = unwrap(rum.type).name;
+  const sum = unwrap(field(await type(group), 'sum', group).type).name;
+  field(await type(sum), 'visits', sum);
+  const filterType = unwrap(rum.args.find(a => a.name === 'filter')?.type)?.name;
+  const filterFields = ((await type(filterType))?.inputFields ?? []).map(f => f.name);
+  for (const f of ['siteTag', 'datetime_geq', 'datetime_lt']) {
+    if (!filterFields.includes(f)) throw new Error(`filter field "${f}" not found on ${filterType}`);
+  }
+  console.log(`schema ok: ${viewer}.accounts -> ${account}.rumPageloadEventsAdaptiveGroups(filter: ${filterType}) -> ${group}.sum.visits`);
+  const r = await pnctVisitorsMonth(null);
+  console.log(`query ok: ${r.value} visits in ${previousLisbonMonth().key} (Europe/Lisbon)`);
 }
 
 // ---------- baking into index.html ----------
@@ -216,7 +298,8 @@ const publishable = m => m && m.public === true && isNumber(m.value) && typeof m
 
 /** One sentence as HTML. A unit right after {value} (e.g. "%") goes inside the teal span. */
 function sentenceHtml(m) {
-  return m.sentence.split(/(\{value\}%?|\{month\})/).map(part => {
+  const template = m.value === 1 && typeof m.sentenceOne === 'string' && m.sentenceOne.includes('{value}') ? m.sentenceOne : m.sentence;
+  return template.split(/(\{value\}%?|\{month\})/).map(part => {
     if (part.startsWith('{value}')) {
       const unit = part.slice('{value}'.length);
       return `<span class="num" data-value="${m.value}"${unit ? ` data-unit="${esc(unit)}"` : ''}>${numberFormat.format(m.value)}${esc(unit)}</span>`;
@@ -270,7 +353,11 @@ async function main() {
   const htmlFile = opt('--html') ?? DEFAULT_HTML;
   const from = opt('--from');
 
-  const data = from ? JSON.parse(await readFile(from, 'utf8')) : await collect();
+  if (args.includes('--check-cf')) { await checkCloudflare(); return; }
+
+  // The previous output doubles as a cache (e.g. last month's PNCT visits don't change).
+  const previous = await readFile(out, 'utf8').then(JSON.parse).catch(() => null);
+  const data = from ? JSON.parse(await readFile(from, 'utf8')) : await collect(previous);
   const json = JSON.stringify(data, null, 2) + '\n';
   if (dryRun) { process.stdout.write(json); return; }
 

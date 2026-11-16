@@ -1,0 +1,11 @@
+# User service on the Pi: refresh the live figures on singledev.eu.
+# Install: see README, "Live figures". Output goes to the journal:
+#   journalctl --user -u singledev-stats
+[Unit]
+Description=Refresh live figures for singledev.eu
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash %h/cv-site/stats/run-on-pi.sh
+TimeoutStartSec=5min
+Nice=10

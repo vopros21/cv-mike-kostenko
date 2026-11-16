@@ -1,0 +1,11 @@
+# Every 6 hours; runs a missed slot at boot (Persistent=true).
+[Unit]
+Description=Refresh live figures for singledev.eu every 6 hours
+
+[Timer]
+OnCalendar=*-*-* 00/6:00:00
+RandomizedDelaySec=10min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
