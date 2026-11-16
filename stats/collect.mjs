@@ -7,18 +7,25 @@
 //   node stats/collect.mjs --html x.html   # bake into another copy of index.html
 //   node stats/collect.mjs --from y.json   # skip the sources, render an existing live.json
 //   node stats/collect.mjs --check-cf      # verify the Cloudflare query against the live schema
+//   node stats/collect.mjs --checks z.json # keep the check history elsewhere (default docs/data/checks.json)
+//   node stats/collect.mjs --dry-run --now 2026-12-20T09:00:00Z   # testing: PNCT window as of that date
 //
 // Environment (see README, "Live figures"): CF_API_TOKEN, CF_ACCOUNT_TAG, CF_SITE_TAG for PNCT;
 // Prazo is read with psql as the role cv_stats over the local socket (PRAZO_DB_ROLE, PRAZO_DB,
 // PRAZO_UNIT override the defaults cv_stats, prazo, prazo.service).
 //
 // After writing the JSON it rewrites, in index.html:
-//   - the <!-- live:start --> ... <!-- live:end --> region: the "Right now" sentences
-//     (public metrics with a value only) or the static fallback sentence when there are none;
+//   - the <!-- live:start --> ... <!-- live:end --> region: the "Right now" sentences (metrics that
+//     are public, have a value, and reach their optional minPublic threshold) or the static
+//     fallback sentence when there are none;
 //   - the status words in each <tr data-system="..."> of the "Systems I run" table.
 // Output depends only on the data, so re-rendering the same JSON gives no diff.
 // docs/scripts/live.js then turns the baked timestamp into "updated X ago" and applies the
 // stale styling after 48 h.
+//
+// Each run also appends this run's health checks to docs/data/checks.json ({at, prazo, pnct}:
+// true = passed, false = failed, null = not checked), keeps the last 35 days, and computes
+// uptime_30d from it.
 //
 // Node 18+ (global fetch), no dependencies. Meant to run from cron on the Raspberry Pi,
 // followed by a commit and push of docs/data/live.json (see README, "Live figures").
@@ -38,7 +45,15 @@ import path from 'node:path';
 const here = path.dirname(fileURLToPath(import.meta.url));
 const DEFAULT_OUT = path.join(here, '..', 'docs', 'data', 'live.json');
 const DEFAULT_HTML = path.join(here, '..', 'docs', 'index.html');
+const DEFAULT_CHECKS = path.join(here, '..', 'docs', 'data', 'checks.json');
+const DAY_MS = 24 * 60 * 60 * 1000;
+const CHECKS_KEEP_DAYS = 35;
+const UPTIME_DAYS = 30;
 const SOURCE_TIMEOUT_MS = 15_000;
+// "Now" for placing the PNCT window. --now <ISO> overrides it, for testing only.
+const nowArg = process.argv.indexOf('--now');
+const NOW = nowArg >= 0 ? new Date(process.argv[nowArg + 1]) : new Date();
+if (Number.isNaN(NOW.getTime())) throw new Error('--now needs an ISO date, e.g. 2026-12-01T09:00:00Z');
 
 // ---------- helpers ----------
 
@@ -73,10 +88,11 @@ async function psqlCvStats(sql) {
   return stdout.trim();
 }
 
-/** Midnight Europe/Lisbon at the start of the given month (month may be 0 or 13: Date rolls it over). */
-function lisbonMonthStart(year, month) {
-  const guess = new Date(Date.UTC(year, month - 1, 1));
-  // Lisbon is UTC+0 or UTC+1 and never changes offset on the 1st, so the offset at the UTC guess holds.
+/** Midnight Europe/Lisbon at the start of the given calendar day (day may be <= 0: Date rolls it over). */
+function lisbonMidnight(year, month, day) {
+  const guess = new Date(Date.UTC(year, month - 1, day));
+  // Lisbon is UTC+0 or UTC+1 and switches at 01:00 UTC, so the offset at 00:00 UTC on that day
+  // is the offset in force at local midnight.
   const name = new Intl.DateTimeFormat('en', { timeZone: 'Europe/Lisbon', timeZoneName: 'longOffset' })
     .formatToParts(guess).find(p => p.type === 'timeZoneName').value;          // "GMT", "GMT+01:00"
   const m = name.match(/GMT([+-])(\d{2}):(\d{2})/);
@@ -84,19 +100,16 @@ function lisbonMonthStart(year, month) {
   return new Date(guess.getTime() - offsetMin * 60_000);
 }
 
-/** The previous full calendar month in Europe/Lisbon: { key: "2026-10", start, end } (end exclusive). */
-function previousLisbonMonth(now = new Date()) {
-  const [y, m] = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit' })
+/** The last `days` full days in Europe/Lisbon before `now`: { start, end } (end = today 00:00, exclusive). */
+function lastFullLisbonDays(days, now = new Date()) {
+  const [y, m, d] = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit', day: '2-digit' })
     .format(now).split('-').map(Number);
-  const start = lisbonMonthStart(y, m - 1);
-  const end = lisbonMonthStart(y, m);
-  const key = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit' }).format(start);
-  return { key, start, end };
+  return { start: lisbonMidnight(y, m, d - days), end: lisbonMidnight(y, m, d) };
 }
 
 // ---------- sources: one async function per metric ----------
-// Each gets the previous live.json (or null) and returns { value: number|null, asOf?: ISO string }.
-// asOf defaults to "now" when value is set.
+// Each gets a context { now: Date, checks: [...] } (checks includes this run's row) and returns
+// { value: number|null, asOf?: ISO string }. asOf defaults to "now" when value is set.
 
 async function prazoActiveUsers() {
   // People Prazo is reminding, from the aggregate view public_stats in Prazo's database
@@ -107,8 +120,8 @@ async function prazoActiveUsers() {
   return { value: Number(out) };
 }
 
-// Cloudflare Web Analytics has data for pnct.singledev.eu from this day on (Europe/Lisbon).
-// Months that start earlier are incomplete, so they are never published (null).
+// Cloudflare Web Analytics has data for pnct.singledev.eu from this day on (00:00 Europe/Lisbon).
+// A window that starts earlier would be incomplete, so it stays null.
 const PNCT_DATA_SINCE = '2026-11-16T00:00:00Z';
 // Only the production host; Pages preview hosts (*.pnct-map.pages.dev) share the site tag.
 const PNCT_HOST = 'pnct.singledev.eu';
@@ -123,36 +136,40 @@ const PNCT_QUERY = `query PnctVisits($accountTag: string!, $siteTag: string!, $h
   }
 }`;
 
-async function pnctVisitorsMonth(previous) {
-  // Visits to pnct.singledev.eu in the previous full calendar month (Europe/Lisbon), from
-  // Cloudflare Web Analytics. A month's figure doesn't change once the month is over, so the
-  // value already in live.json is reused while it is for the same month.
-  const month = previousLisbonMonth();
-  const asOf = new Date(month.end.getTime() - 1).toISOString();   // last instant of that month
-  const cached = previous?.metrics?.find(m => m.id === 'pnct_visitors_month');
-  if (cached && isNumber(cached.value) && cached.asOf === asOf) return { value: cached.value, asOf };
-
-  if (month.start < new Date(PNCT_DATA_SINCE)) {
-    console.error(`[collect] pnct_visitors_month: ${month.key} started before Web Analytics data (${PNCT_DATA_SINCE.slice(0, 10)}); not published`);
+async function pnctVisitors30d() {
+  // Visits to pnct.singledev.eu over the last 30 full days (Europe/Lisbon, today excluded), from
+  // Cloudflare Web Analytics. Null until the whole window lies after PNCT_DATA_SINCE.
+  const win = lastFullLisbonDays(30, NOW);
+  if (win.start < new Date(PNCT_DATA_SINCE)) {
+    const first = new Date(new Date(PNCT_DATA_SINCE).getTime() + 30 * DAY_MS).toISOString().slice(0, 10);
+    console.error(`[collect] pnct_visitors_30d: window starts before Web Analytics data (${PNCT_DATA_SINCE.slice(0, 10)}); first figure on ${first}`);
     return { value: null };
   }
-
   const { CF_ACCOUNT_TAG: accountTag, CF_SITE_TAG: siteTag } = process.env;
   if (!accountTag || !siteTag) throw new Error('CF_ACCOUNT_TAG and CF_SITE_TAG must be set');
   const data = await cloudflareGraphQL(PNCT_QUERY,
-    { accountTag, siteTag, host: PNCT_HOST, start: month.start.toISOString(), end: month.end.toISOString() });
+    { accountTag, siteTag, host: PNCT_HOST, start: win.start.toISOString(), end: win.end.toISOString() });
   const accounts = data?.viewer?.accounts ?? [];
   if (!accounts.length) throw new Error('no account matched CF_ACCOUNT_TAG (or the token cannot read it)');
   const visits = accounts[0].rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits;
-  // No rows means no recorded pageviews that month; don't turn missing data into "0 visitors".
-  if (!isNumber(visits)) throw new Error(`no Web Analytics data for ${PNCT_HOST} in ${month.key}`);
-  return { value: visits, asOf };
+  // No rows means no recorded pageviews in the window; don't turn missing data into "0 visitors".
+  if (!isNumber(visits)) throw new Error(`no Web Analytics data for ${PNCT_HOST} in the last 30 days`);
+  return { value: visits, asOf: win.end.toISOString() };
 }
 
-async function uptime30d() {
-  // TODO(uptime): share of passed health checks over the last 30 days, in percent (e.g. 99.8).
-  // Needs a history (e.g. Uptime Kuma on the Pi, or a log of checkHealth() results). Hidden until then.
-  return { value: null };
+async function uptime30d({ now, checks }) {
+  // Share of passed health checks (prazo and pnct, every run) over the last 30 days, from
+  // docs/data/checks.json. Null until the history covers 30 days. Rounded down to 0.1 %, so a
+  // single failure never shows as 100 %.
+  const from = now.getTime() - UPTIME_DAYS * DAY_MS;
+  const oldest = checks.length ? Date.parse(checks[0].at) : NaN;
+  if (!(oldest <= from)) return { value: null };
+  const results = checks.filter(c => Date.parse(c.at) >= from)
+    .flatMap(c => CHECKED_SYSTEMS.map(id => c[id]))
+    .filter(r => typeof r === 'boolean');
+  if (!results.length) return { value: null };
+  const passed = results.filter(Boolean).length;
+  return { value: Math.floor((passed / results.length) * 1000) / 10 };
 }
 
 async function parkingActiveUsers() {
@@ -194,12 +211,12 @@ const HEALTH = {
 // ---------- registry ----------
 
 const METRICS = [
-  { id: 'prazo_active_users', system: 'prazo', public: true, source: prazoActiveUsers,
+  { id: 'prazo_active_users', system: 'prazo', public: true, minPublic: 10, source: prazoActiveUsers,
     sentence: 'Prazo is reminding {value} people about Portuguese deadlines.',
     sentenceOne: 'Prazo is reminding {value} person about Portuguese deadlines.' },
-  { id: 'pnct_visitors_month', system: 'pnct', public: true, source: pnctVisitorsMonth,
-    sentence: 'The PNCT map had {value} visitors in {month}.',
-    sentenceOne: 'The PNCT map had {value} visitor in {month}.' },
+  { id: 'pnct_visitors_30d', system: 'pnct', public: true, minPublic: 100, source: pnctVisitors30d,
+    sentence: 'The PNCT map had {value} visitors in the last 30 days.',
+    sentenceOne: 'The PNCT map had {value} visitor in the last 30 days.' },
   { id: 'uptime_30d', system: null, public: true, source: uptime30d,
     sentence: 'Over the last 30 days, {value}% of health checks on my public systems passed.' },
   { id: 'parking_active_users', system: 'parking', public: false, source: parkingActiveUsers,
@@ -207,6 +224,8 @@ const METRICS = [
   { id: 'parking_bookings_week', system: 'parking', public: false, source: parkingBookingsWeek,
     sentence: 'The office parking service took {value} bookings last week.' },
 ];
+
+// minPublic: the metric is rendered only once its value reaches this (optional) threshold.
 
 // Status shown when a system isn't checked: hubithab is in development, parking is out of reach.
 const SYSTEMS = [
@@ -229,11 +248,42 @@ async function runSource(name, fn) {
 
 const isNumber = v => typeof v === 'number' && Number.isFinite(v);
 
-async function collect(previous) {
-  const now = new Date().toISOString();
+const CHECKED_SYSTEMS = SYSTEMS.filter(s => !s.unchecked && HEALTH[s.id]).map(s => s.id);
+
+/** Reads the check history; a missing file is an empty history, a broken one is an error. */
+async function readChecks(file) {
+  let text;
+  try { text = await readFile(file, 'utf8'); } catch (e) { if (e.code === 'ENOENT') return []; throw e; }
+  const rows = JSON.parse(text).checks;
+  if (!Array.isArray(rows)) throw new Error(`${file}: "checks" must be an array`);
+  return rows.filter(r => r && validTime(r.at)).sort((a, b) => Date.parse(a.at) - Date.parse(b.at));
+}
+
+/** One row per line, so each run adds a one-line diff. */
+const checksJson = rows => `{\n  "checks": [\n${rows.map(r => `    ${JSON.stringify(r)}`).join(',\n')}${rows.length ? '\n' : ''}  ]\n}\n`;
+
+async function collect(history) {
+  const nowDate = new Date();
+  const now = nowDate.toISOString();
+
+  // Health checks first: this run's results count towards uptime_30d.
+  const systems = await Promise.all(SYSTEMS.map(async s => {
+    if (s.unchecked || !HEALTH[s.id]) return { id: s.id, status: s.status, checkedAt: null };
+    const status = await runSource(`health:${s.id}`, HEALTH[s.id]);
+    return status
+      ? { id: s.id, status, checkedAt: new Date().toISOString() }
+      : { id: s.id, status: s.status, checkedAt: null };
+  }));
+  const row = { at: now };
+  for (const id of CHECKED_SYSTEMS) {
+    const s = systems.find(x => x.id === id);
+    row[id] = s.checkedAt === null ? null : s.status === 'running';
+  }
+  const keepFrom = nowDate.getTime() - CHECKS_KEEP_DAYS * DAY_MS;
+  const checks = [...history.filter(c => Date.parse(c.at) >= keepFrom), row];
 
   const metrics = await Promise.all(METRICS.map(async m => {
-    const r = await runSource(m.id, () => m.source(previous));
+    const r = await runSource(m.id, () => m.source({ now: nowDate, checks }));
     const value = r && isNumber(r.value) ? r.value : null;
     return {
       id: m.id,
@@ -243,21 +293,14 @@ async function collect(previous) {
       ...(m.sentenceOne ? { sentenceOne: m.sentenceOne } : {}),
       asOf: value === null ? null : (r.asOf ?? now),
       public: m.public,
+      ...(isNumber(m.minPublic) ? { minPublic: m.minPublic } : {}),
     };
-  }));
-
-  const systems = await Promise.all(SYSTEMS.map(async s => {
-    if (s.unchecked || !HEALTH[s.id]) return { id: s.id, status: s.status, checkedAt: null };
-    const status = await runSource(`health:${s.id}`, HEALTH[s.id]);
-    return status
-      ? { id: s.id, status, checkedAt: new Date().toISOString() }
-      : { id: s.id, status: s.status, checkedAt: null };
   }));
 
   const anything = metrics.some(m => m.value !== null) || systems.some(s => s.checkedAt !== null);
   // generatedAt stays null while nothing is measured, so the site never claims "updated just now"
   // for an empty file.
-  return { generatedAt: anything ? now : null, metrics, systems };
+  return { data: { generatedAt: anything ? now : null, metrics, systems }, checks };
 }
 
 // ---------- --check-cf: verify the PNCT query against the live GraphQL schema ----------
@@ -294,8 +337,8 @@ async function checkCloudflare() {
     host: PNCT_HOST, start: start.toISOString(), end: end.toISOString() });
   if (!week?.viewer?.accounts?.length) throw new Error('no account matched CF_ACCOUNT_TAG (or the token cannot read it)');
   console.log(`query ok: ${week.viewer.accounts[0].rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits ?? 0} visits on ${PNCT_HOST} in the last 7 days`);
-  const r = await pnctVisitorsMonth(null).catch(e => { console.log(`monthly figure: ${e.message}`); return null; });
-  if (r) console.log(`monthly figure for ${previousLisbonMonth().key}: ${r.value ?? 'not published'}`);
+  const r = await pnctVisitors30d().catch(e => { console.log(`30-day figure: ${e.message}`); return null; });
+  if (r) console.log(`30-day figure: ${r.value ?? 'not available yet'}`);
 }
 
 // ---------- baking into index.html ----------
@@ -312,8 +355,10 @@ const monthFormat = new Intl.DateTimeFormat('en', { month: 'long', timeZone: 'UT
 const dayFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
 const stampFormat = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' });
 
-const publishable = m => m && m.public === true && isNumber(m.value) && typeof m.sentence === 'string'
-  && m.sentence.includes('{value}') && (!m.sentence.includes('{month}') || validTime(m.asOf));
+const publishable = m => m && m.public === true && isNumber(m.value)
+  && (!isNumber(m.minPublic) || m.value >= m.minPublic)
+  && typeof m.sentence === 'string' && m.sentence.includes('{value}')
+  && (!m.sentence.includes('{month}') || validTime(m.asOf));
 
 /** One sentence as HTML. A unit right after {value} (e.g. "%") goes inside the teal span. */
 function sentenceHtml(m) {
@@ -371,17 +416,24 @@ async function main() {
   const out = opt('--out') ?? DEFAULT_OUT;
   const htmlFile = opt('--html') ?? DEFAULT_HTML;
   const from = opt('--from');
+  const checksFile = opt('--checks') ?? DEFAULT_CHECKS;
 
   if (args.includes('--check-cf')) { await checkCloudflare(); return; }
 
-  // The previous output doubles as a cache (e.g. last month's PNCT visits don't change).
-  const previous = await readFile(out, 'utf8').then(JSON.parse).catch(() => null);
-  const data = from ? JSON.parse(await readFile(from, 'utf8')) : await collect(previous);
+  // --from only re-renders existing data: no sources, no checks, checks.json untouched.
+  const result = from ? { data: JSON.parse(await readFile(from, 'utf8')), checks: null }
+    : await collect(await readChecks(checksFile));
+  const { data, checks } = result;
   const json = JSON.stringify(data, null, 2) + '\n';
-  if (dryRun) { process.stdout.write(json); return; }
+  if (dryRun) {
+    process.stdout.write(json);
+    if (checks) console.error(`[collect] dry run: ${checks.length} check row(s) in the last ${CHECKS_KEEP_DAYS} days incl. this run; nothing written`);
+    return;
+  }
 
   await writeAtomic(out, json);
   await writeAtomic(htmlFile, bake(await readFile(htmlFile, 'utf8'), data));
+  if (checks) await writeAtomic(checksFile, checksJson(checks));    // last: a failed run adds no row
   const shown = (data.metrics ?? []).filter(publishable).length;
   console.log(`[collect] wrote ${path.relative(process.cwd(), out)} and baked ${path.relative(process.cwd(), htmlFile)}: ${shown} public metric(s) with values`);
 }

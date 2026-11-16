@@ -21,7 +21,7 @@ The build also regenerates the homepage's Writing section (latest three posts) a
 
 ## Live figures ("Right now" on the homepage)
 
-`stats/collect.mjs` writes `docs/data/live.json`, then bakes the figures into `docs/index.html`: the sentences between `<!-- live:start -->` and `<!-- live:end -->`, and the status words in the "Systems I run" table. Only metrics with `"public": true` and a numeric `value` are shown; `null` is never displayed. With nothing publishable, the static sentence with no numbers is written instead. The output depends only on the data, so re-running on the same JSON gives no diff.
+`stats/collect.mjs` writes `docs/data/live.json`, then bakes the figures into `docs/index.html`: the sentences between `<!-- live:start -->` and `<!-- live:end -->`, and the status words in the "Systems I run" table. A metric is shown only if it is `"public": true`, has a numeric `value`, and the value reaches its optional `minPublic` threshold; `null` is never displayed. With nothing publishable, the static sentence with no numbers is written instead. The output depends only on the data, so re-running on the same JSON gives no diff.
 
 `docs/scripts/live.js` does only what depends on the visitor's clock: "updated X ago", and the stale styling once `generatedAt` is older than 48 hours (grey figures, "figures as of <date>", amber dot, "Data stale since <date>" for old system checks). There is no animation.
 
@@ -31,21 +31,26 @@ node stats/collect.mjs               # write docs/data/live.json and bake docs/i
 node stats/collect.mjs --from x.json --out /tmp/site/data/live.json --html /tmp/site/index.html
                                      # render existing data into a copy of the site (no sources run)
 node stats/collect.mjs --check-cf    # verify the Cloudflare query against the live GraphQL schema
+node stats/collect.mjs --dry-run --now 2026-12-20T09:00:00Z
+                                     # testing: place the PNCT 30-day window as of that date
 ```
 
 Node 18+ (the Pi has Debian's Node 20), no npm dependencies. A source that fails logs the error and gives `null`; the run still succeeds.
 
 ### Sources and definitions
 
-| Metric | Shown as | Source |
-| --- | --- | --- |
-| `prazo_active_users` | "Prazo is reminding N people about Portuguese deadlines." | `SELECT people_reminded FROM public_stats` in Prazo's database, with `psql -At` as the read-only role `cv_stats` over the local socket |
-| `pnct_visitors_month` | "The PNCT map had N visitors in October." | Cloudflare Web Analytics, GraphQL `rumPageloadEventsAdaptiveGroups` → `sum.visits`, filtered by site tag, for the previous full calendar month in Europe/Lisbon |
-| `uptime_30d` | hidden (`null`) | not collected yet |
-| `parking_*` | hidden (`"public": false`) | not collected: the Pi can't reach the company network; stays private until Devexperts approves |
+| Metric | `minPublic` | Shown as | Source |
+| --- | --- | --- | --- |
+| `prazo_active_users` | 10 | "Prazo is reminding N people about Portuguese deadlines." | `SELECT people_reminded FROM public_stats` in Prazo's database, with `psql -At` as the read-only role `cv_stats` over the local socket |
+| `pnct_visitors_30d` | 100 | "The PNCT map had N visitors in the last 30 days." | Cloudflare Web Analytics, GraphQL `rumPageloadEventsAdaptiveGroups` → `sum.visits`, filtered by site tag and `requestHost: pnct.singledev.eu` |
+| `uptime_30d` | none | "Over the last 30 days, N% of health checks on my public systems passed." | `docs/data/checks.json`, written by the collector itself |
+| `parking_*` | none | hidden (`"public": false`) | not collected: the Pi can't reach the company network; stays private until Devexperts approves |
+
+**Thresholds.** `minPublic` (optional, set per metric in `stats/collect.mjs` and copied into `live.json`) keeps a figure off the page until it is worth showing. Below it, the metric is still collected and stored, just not rendered; with nothing above its threshold the page keeps the static sentence.
 
 - **People Prazo is reminding**: users who finished onboarding (Prazo only creates the user row then; `/delete` removes it), have at least one obligation that produces reminders (a car, a property, landlord, or IRS reminders on), and whose most recent delivery attempt is not a permanent Telegram failure (blocked the bot, account deactivated, chat not found). The view lives in Prazo's repo (`V5__public_stats_view.sql`) and returns counts only; the role setup is in Prazo's `ops/cv-stats/`.
-- **PNCT visitors**: Cloudflare's "visits" for the month (the figure Web Analytics shows as Visits), counting only the production host `pnct.singledev.eu`; Pages preview hosts share the site tag and are left out. `{month}` is the English month name. Web Analytics data starts on 16 Nov 2026 (`PNCT_DATA_SINCE` in `stats/collect.mjs`), so months that start earlier are incomplete and never published: the first figure is December 2026, shown from 1 Jan 2027. A month with no recorded data gives `null`, not 0. Once a month's value is in `live.json` it is reused until the month changes, so Cloudflare is queried about once a month.
+- **PNCT visitors**: Cloudflare's "visits" (the figure Web Analytics shows as Visits) over the last 30 full days in Europe/Lisbon, today excluded, counting only the production host (Pages preview hosts share the site tag). Web Analytics data starts on 16 Nov 2026 (`PNCT_DATA_SINCE`), so the value stays `null` until the whole window lies after it: the first figure comes on 16 Dec 2026. A window with no recorded data gives `null`, not 0.
+- **Uptime**: every run appends one row to `docs/data/checks.json`, `{"at": …, "prazo": true|false|null, "pnct": true|false|null}` (passed, failed, not checked), one row per line, and drops rows older than 35 days. `uptime_30d` is passed checks ÷ all checks (both systems) over the last 30 days, rounded down to 0.1 % so a single failure never shows as 100 %. It stays `null` until the history covers 30 days.
 - **Statuses**: `prazo` is Running if `systemctl is-active prazo.service` succeeds, otherwise Degraded; `pnct` is Running if `https://pnct.singledev.eu/` answers 200 within 10 s, otherwise Degraded; `parking` and `hubithab` aren't checked (static "Running" and "In development").
 - Singular forms ("1 person", "1 visitor") come from each metric's `sentenceOne`.
 
@@ -58,7 +63,7 @@ What runs where:
 | Dedicated clone | `~/cv-site` (remote `git@github-cv-site:vopros21/cv-mike-kostenko.git`) |
 | Deploy key | `~/.ssh/cv-site-deploy`, used through the `github-cv-site` host alias in `~/.ssh/config`; write access to this repository only |
 | Secrets | `~/.config/singledev-stats/env` (chmod 600): `CF_API_TOKEN`, `CF_ACCOUNT_TAG`, `CF_SITE_TAG` |
-| Runner | `stats/run-on-pi.sh`: pull --rebase on `main`, collect, commit `docs/data/live.json` + `docs/index.html` only if a value or status changed or the last data commit is over 24 h old, push. Commit message `data: refresh live figures`. Exits non-zero on failure and restores both files, so a failed run commits nothing |
+| Runner | `stats/run-on-pi.sh`: pull --rebase --autostash on `main`, collect, commit `docs/data/live.json` + `docs/index.html` + `docs/data/checks.json` only if a value or status changed or the last data commit is over 24 h old, push. Commit message `data: refresh live figures`. New check rows alone don't trigger a commit; `checks.json` stays modified in `~/cv-site` until the next data commit. Exits non-zero on failure and restores `live.json`/`index.html`, so a failed run commits nothing (and adds no check row) |
 | Schedule | systemd user units from `stats/systemd/`, installed in `~/.config/systemd/user/`; every 6 h, `Persistent=true`; logs: `journalctl --user -u singledev-stats` |
 | Database access | role `cv_stats` (read-only, `SELECT` on `public_stats` only), peer-mapped from the OS user `mike` in `pg_hba.conf`/`pg_ident.conf` |
 

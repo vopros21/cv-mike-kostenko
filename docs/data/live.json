@@ -8,16 +8,18 @@
       "sentence": "Prazo is reminding {value} people about Portuguese deadlines.",
       "sentenceOne": "Prazo is reminding {value} person about Portuguese deadlines.",
       "asOf": null,
-      "public": true
+      "public": true,
+      "minPublic": 10
     },
     {
-      "id": "pnct_visitors_month",
+      "id": "pnct_visitors_30d",
       "system": "pnct",
       "value": null,
-      "sentence": "The PNCT map had {value} visitors in {month}.",
-      "sentenceOne": "The PNCT map had {value} visitor in {month}.",
+      "sentence": "The PNCT map had {value} visitors in the last 30 days.",
+      "sentenceOne": "The PNCT map had {value} visitor in the last 30 days.",
       "asOf": null,
-      "public": true
+      "public": true,
+      "minPublic": 100
     },
     {
       "id": "uptime_30d",
