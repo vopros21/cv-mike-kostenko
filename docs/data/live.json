@@ -59,7 +59,7 @@
     },
     {
       "id": "parking",
-      "status": "running",
+      "status": "internal",
       "checkedAt": null
     },
     {
