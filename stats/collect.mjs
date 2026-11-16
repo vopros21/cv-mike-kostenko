@@ -107,10 +107,16 @@ async function prazoActiveUsers() {
   return { value: Number(out) };
 }
 
-const PNCT_QUERY = `query PnctVisits($accountTag: string!, $siteTag: string!, $start: Time!, $end: Time!) {
+// Cloudflare Web Analytics has data for pnct.singledev.eu from this day on (Europe/Lisbon).
+// Months that start earlier are incomplete, so they are never published (null).
+const PNCT_DATA_SINCE = '2026-11-16T00:00:00Z';
+// Only the production host; Pages preview hosts (*.pnct-map.pages.dev) share the site tag.
+const PNCT_HOST = 'pnct.singledev.eu';
+
+const PNCT_QUERY = `query PnctVisits($accountTag: string!, $siteTag: string!, $host: string!, $start: Time!, $end: Time!) {
   viewer {
     accounts(filter: { accountTag: $accountTag }) {
-      rumPageloadEventsAdaptiveGroups(limit: 1, filter: { siteTag: $siteTag, datetime_geq: $start, datetime_lt: $end }) {
+      rumPageloadEventsAdaptiveGroups(limit: 1, filter: { siteTag: $siteTag, requestHost: $host, datetime_geq: $start, datetime_lt: $end }) {
         sum { visits }
       }
     }
@@ -126,12 +132,20 @@ async function pnctVisitorsMonth(previous) {
   const cached = previous?.metrics?.find(m => m.id === 'pnct_visitors_month');
   if (cached && isNumber(cached.value) && cached.asOf === asOf) return { value: cached.value, asOf };
 
+  if (month.start < new Date(PNCT_DATA_SINCE)) {
+    console.error(`[collect] pnct_visitors_month: ${month.key} started before Web Analytics data (${PNCT_DATA_SINCE.slice(0, 10)}); not published`);
+    return { value: null };
+  }
+
   const { CF_ACCOUNT_TAG: accountTag, CF_SITE_TAG: siteTag } = process.env;
   if (!accountTag || !siteTag) throw new Error('CF_ACCOUNT_TAG and CF_SITE_TAG must be set');
   const data = await cloudflareGraphQL(PNCT_QUERY,
-    { accountTag, siteTag, start: month.start.toISOString(), end: month.end.toISOString() });
-  const visits = data?.viewer?.accounts?.[0]?.rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits;
-  if (!isNumber(visits)) throw new Error('no visits in the Cloudflare response (wrong account or site tag?)');
+    { accountTag, siteTag, host: PNCT_HOST, start: month.start.toISOString(), end: month.end.toISOString() });
+  const accounts = data?.viewer?.accounts ?? [];
+  if (!accounts.length) throw new Error('no account matched CF_ACCOUNT_TAG (or the token cannot read it)');
+  const visits = accounts[0].rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits;
+  // No rows means no recorded pageviews that month; don't turn missing data into "0 visitors".
+  if (!isNumber(visits)) throw new Error(`no Web Analytics data for ${PNCT_HOST} in ${month.key}`);
   return { value: visits, asOf };
 }
 
@@ -271,12 +285,17 @@ async function checkCloudflare() {
   field(await type(sum), 'visits', sum);
   const filterType = unwrap(rum.args.find(a => a.name === 'filter')?.type)?.name;
   const filterFields = ((await type(filterType))?.inputFields ?? []).map(f => f.name);
-  for (const f of ['siteTag', 'datetime_geq', 'datetime_lt']) {
+  for (const f of ['siteTag', 'requestHost', 'datetime_geq', 'datetime_lt']) {
     if (!filterFields.includes(f)) throw new Error(`filter field "${f}" not found on ${filterType}`);
   }
   console.log(`schema ok: ${viewer}.accounts -> ${account}.rumPageloadEventsAdaptiveGroups(filter: ${filterType}) -> ${group}.sum.visits`);
-  const r = await pnctVisitorsMonth(null);
-  console.log(`query ok: ${r.value} visits in ${previousLisbonMonth().key} (Europe/Lisbon)`);
+  const end = new Date(), start = new Date(end.getTime() - 7 * 864e5);
+  const week = await cloudflareGraphQL(PNCT_QUERY, { accountTag: process.env.CF_ACCOUNT_TAG, siteTag: process.env.CF_SITE_TAG,
+    host: PNCT_HOST, start: start.toISOString(), end: end.toISOString() });
+  if (!week?.viewer?.accounts?.length) throw new Error('no account matched CF_ACCOUNT_TAG (or the token cannot read it)');
+  console.log(`query ok: ${week.viewer.accounts[0].rumPageloadEventsAdaptiveGroups?.[0]?.sum?.visits ?? 0} visits on ${PNCT_HOST} in the last 7 days`);
+  const r = await pnctVisitorsMonth(null).catch(e => { console.log(`monthly figure: ${e.message}`); return null; });
+  if (r) console.log(`monthly figure for ${previousLisbonMonth().key}: ${r.value ?? 'not published'}`);
 }
 
 // ---------- baking into index.html ----------
