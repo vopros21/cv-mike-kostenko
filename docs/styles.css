@@ -119,6 +119,7 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
   min-height: 3.5rem;
 }
 .topbar .home { font-weight: 600; text-decoration: none; white-space: nowrap; }
+.topbar nav { margin-left: auto; }
 .topbar nav ul { list-style: none; padding: 0; display: flex; gap: 1.5rem; }
 .topbar nav a {
   color: var(--muted);
@@ -140,12 +141,13 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 .hero h1 { font-size: var(--fs-56); letter-spacing: -0.02em; line-height: 1.05; }
 .hero .intro { margin-top: 1.25rem; max-width: 44rem; font-size: var(--fs-21); line-height: 1.45; }
 
-.now { margin-top: 2.5rem; max-width: 44rem; }
+/* The hero's main element: live figures in sentences, baked into the HTML by stats/collect.mjs */
+.now { margin-top: 2.5rem; }
 .now-text {
-  font-size: var(--fs-21);
-  line-height: 1.45;
-  /* Room for the longest expected live paragraph, so nothing below moves when data arrives. */
-  min-height: calc(4 * 1.45em);
+  max-width: 60ch;
+  font-size: var(--fs-28);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
 }
 .now-text .label { font-weight: 600; }
 .num {
@@ -158,13 +160,11 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 .now.is-stale .num { color: var(--muted); }
 
 .now-meta {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   display: flex; align-items: center; gap: 0.5rem;
-  font-size: var(--fs-13);
+  font-size: var(--fs-15);
   color: var(--muted);
-  min-height: 1.55em;
 }
-.now-meta[data-state="none"] { visibility: hidden; }
 .now-meta .dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--live); flex: none; }
 .now.is-stale .now-meta { color: var(--stale); }
 .now.is-stale .now-meta .dot { background: var(--stale); }
@@ -176,7 +176,7 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 .systems thead th { font-size: var(--fs-13); font-weight: 500; color: var(--muted); padding-top: 0; padding-bottom: 0.625rem; }
 .systems tbody th { font-weight: 600; width: var(--label-col); white-space: nowrap; }
 .systems .what { max-width: 30em; }
-.systems .since { white-space: nowrap; color: var(--muted); }
+.systems .since { white-space: nowrap; color: var(--muted); font-size: var(--fs-15); }
 .systems .stack { color: var(--muted); font-size: var(--fs-15); width: 30%; }
 .status { display: block; margin-top: 0.25rem; font-size: var(--fs-15); color: var(--muted); }
 .status.is-warn { color: var(--stale); }
@@ -308,8 +308,8 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
   .topbar nav ul { gap: 1rem; }
   .hero { padding-block: 3rem 2.5rem; }
   .hero h1 { font-size: var(--fs-40); }
-  .hero .intro, .now-text { font-size: var(--fs-17); line-height: 1.55; }
-  .now-text { min-height: calc(6 * 1.55em); }
+  .hero .intro { font-size: var(--fs-17); line-height: 1.55; }
+  .now-text { font-size: var(--fs-21); line-height: 1.4; }
 
   .section { padding-block: 2.5rem; }
   .section-head h2 { font-size: var(--fs-21); }
@@ -326,6 +326,7 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
   .systems td { margin-top: 0.25rem; }
   .systems .status { margin-bottom: 0.375rem; }
   .systems .since, .systems .stack { display: inline; font-size: var(--fs-15); }
+  .systems .since::before { content: "Since "; }
   .systems .since::after { content: ". "; }
 
   .entry, .rows, .posts li { grid-template-columns: minmax(0, 1fr); }

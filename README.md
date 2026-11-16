@@ -17,17 +17,21 @@ Public CV: work experience, areas of interests, pet projects.
 2. Build: `cd blog && npm i && npm run build`. This regenerates `docs/blog/` (index, post pages, `.md` copies, `feed.xml`) and the Blog section of `docs/llms.txt`.
 3. Commit the post and the `docs/` changes. GitHub Pages serves `docs/` as is; there is no CI.
 
-The build also rewrites the "Writing" block on the homepage (between the `<!-- writing:start ... -->` and `<!-- writing:end -->` markers in `docs/index.html`) with the latest three posts.
+The build also regenerates the homepage's Writing section (latest three posts) and its "Writing" nav link, between the `writing:*` and `writing-nav:*` markers in `docs/index.html`. With no published posts, both are left out; the blog index page always exists.
 
 ## Live figures ("Right now" on the homepage)
 
-`docs/scripts/live.js` reads `docs/data/live.json` and turns the published figures into sentences. Only metrics with `"public": true` and a numeric `value` are shown; `null` is never displayed. If `generatedAt` is older than 48 hours the figures turn grey with "as of <date>" and the dot turns amber. With no data, or with JS off, the page shows a static sentence with no numbers.
+`stats/collect.mjs` writes `docs/data/live.json`, then bakes the figures into `docs/index.html`: the sentences between `<!-- live:start -->` and `<!-- live:end -->`, and the status words in the "Systems I run" table. Only metrics with `"public": true` and a numeric `value` are shown; `null` is never displayed. With nothing publishable, the static sentence with no numbers is written instead. The output depends only on the data, so re-running on the same JSON gives no diff.
 
-`stats/collect.mjs` writes that file. Each metric has its own source function. They are all TODO stubs that return `null` for now, so a run produces a file with only `null` values.
+`docs/scripts/live.js` does only what depends on the visitor's clock: "updated X ago", the stale styling once `generatedAt` is older than 48 hours (grey figures, "figures as of <date>", amber dot, "Data stale since <date>" for old system checks), and a single count-up on fresh data.
+
+The collector Each metric has its own source function. They are all TODO stubs that return `null` for now, so a run produces a file with only `null` values.
 
 ```sh
 node stats/collect.mjs --dry-run     # print the JSON
-node stats/collect.mjs               # write docs/data/live.json
+node stats/collect.mjs               # write docs/data/live.json and bake docs/index.html
+node stats/collect.mjs --from x.json --out /tmp/site/data/live.json --html /tmp/site/index.html
+                                     # render existing data into a copy of the site (no sources run)
 ```
 
 Node 18+ and no dependencies. Environment variables for the sources, once they're wired up:
@@ -51,7 +55,7 @@ cd ~/cv-mike-kostenko
 set -a; . ~/.config/singledev-stats.env; set +a   # CF_API_TOKEN=... etc., chmod 600
 git pull --quiet --rebase
 node stats/collect.mjs
-git add docs/data/live.json
+git add docs/data/live.json docs/index.html
 git diff --cached --quiet || { git commit --quiet -m "Live figures: update"; git push --quiet; }
 ```
 
