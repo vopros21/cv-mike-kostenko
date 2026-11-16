@@ -16,7 +16,7 @@ main() {
   local repo="${REPO:-$HOME/cv-site}"
   local branch="${BRANCH:-main}"
   local env_file="${ENV_FILE:-$HOME/.config/singledev-stats/env}"
-  local max_age=$((24 * 60 * 60))
+  local max_age=$(( ${MAX_AGE_HOURS:-24} * 60 * 60 ))   # override only for testing
   local files=(docs/data/live.json docs/index.html)
   local message='data: refresh live figures'
 
