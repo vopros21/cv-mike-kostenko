@@ -13,7 +13,7 @@
       "id": "pnct_visitors_month",
       "system": "pnct",
       "value": null,
-      "sentence": "pnct.singledev.eu had {value} visitors in {month}.",
+      "sentence": "The PNCT map had {value} visitors in {month}.",
       "asOf": null,
       "public": true
     },

@@ -23,7 +23,7 @@ The build also regenerates the homepage's Writing section (latest three posts) a
 
 `stats/collect.mjs` writes `docs/data/live.json`, then bakes the figures into `docs/index.html`: the sentences between `<!-- live:start -->` and `<!-- live:end -->`, and the status words in the "Systems I run" table. Only metrics with `"public": true` and a numeric `value` are shown; `null` is never displayed. With nothing publishable, the static sentence with no numbers is written instead. The output depends only on the data, so re-running on the same JSON gives no diff.
 
-`docs/scripts/live.js` does only what depends on the visitor's clock: "updated X ago", the stale styling once `generatedAt` is older than 48 hours (grey figures, "figures as of <date>", amber dot, "Data stale since <date>" for old system checks), and a single count-up on fresh data.
+`docs/scripts/live.js` does only what depends on the visitor's clock: "updated X ago", the stale styling once `generatedAt` is older than 48 hours (grey figures, "figures as of <date>", amber dot, "Data stale since <date>" for old system checks). There is no animation.
 
 The collector Each metric has its own source function. They are all TODO stubs that return `null` for now, so a run produces a file with only `null` values.
 

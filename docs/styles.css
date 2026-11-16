@@ -151,8 +151,6 @@ a:hover { text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 }
 .now-text .label { font-weight: 600; }
 .num {
-  display: inline-block;          /* width is pinned by live.js before the count-up */
-  text-align: right;
   font-weight: 600;
   color: var(--live);
   font-variant-numeric: tabular-nums;

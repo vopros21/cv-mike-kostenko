@@ -12,8 +12,8 @@
 //     (public metrics with a value only) or the static fallback sentence when there are none;
 //   - the status words in each <tr data-system="..."> of the "Systems I run" table.
 // Output depends only on the data, so re-rendering the same JSON gives no diff.
-// docs/scripts/live.js then turns the baked timestamp into "updated X ago", applies the
-// stale styling after 48 h and runs the count-up.
+// docs/scripts/live.js then turns the baked timestamp into "updated X ago" and applies the
+// stale styling after 48 h.
 //
 // Node 18+ (global fetch), no dependencies. Meant to run from cron on the Raspberry Pi,
 // followed by a commit and push of docs/data/live.json (see README, "Live figures").
@@ -137,7 +137,7 @@ const METRICS = [
   { id: 'prazo_active_users', system: 'prazo', public: true, source: prazoActiveUsers,
     sentence: 'Prazo is reminding {value} people about Portuguese deadlines.' },
   { id: 'pnct_visitors_month', system: 'pnct', public: true, source: pnctVisitorsMonth,
-    sentence: 'pnct.singledev.eu had {value} visitors in {month}.' },
+    sentence: 'The PNCT map had {value} visitors in {month}.' },
   { id: 'uptime_30d', system: null, public: true, source: uptime30d,
     sentence: 'Over the last 30 days, {value}% of health checks on my public systems passed.' },
   { id: 'parking_active_users', system: 'parking', public: false, source: parkingActiveUsers,
