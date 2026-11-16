@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mike Kostenko – Java Software Engineer</title>
     <meta name="description" content="Mike Kostenko — Java developer in Porto, Portugal. Oracle Certified Professional, Java SE 21. Backend, fintech, Spring.">
-    <meta name="theme-color" content="#eef1f8" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0b0f1a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#FAFBFC" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#101318" media="(prefers-color-scheme: dark)">
     <meta property="og:type" content="profile">
     <meta property="og:title" content="Mike Kostenko – Java Software Engineer">
     <meta property="og:description" content="Java developer in Porto. OCP Java SE 21. 8 years building and testing fintech software at Devexperts.">
@@ -92,211 +92,190 @@
         }
     </script>
     <link rel="alternate" type="application/rss+xml" title="Mike Kostenko — Blog" href="https://singledev.eu/blog/feed.xml">
+    <link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" type="image/x-icon" href="images/favicon.ico">
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 </head>
 
 <body>
-    <header class="topbar glass">
-        <a href="#about" class="monogram" aria-label="Mike Kostenko — top">MK</a>
-        <nav class="topnav" aria-label="Sections">
-            <a href="#about">About</a>
-            <a href="#experience">Experience</a>
-            <a href="#projects">Projects</a>
-            <a href="blog/">Blog</a>
-            <a href="#skills">Skills</a>
-            <a href="#education">Education</a>
-        </nav>
-        <a id="pdf-button" href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M3 13h10"/></svg>
-            <span>Download CV</span>
-        </a>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+        <div class="container">
+            <a class="home" href="./">Mike Kostenko</a>
+            <nav aria-label="Main">
+                <ul>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#systems">Systems</a></li>
+                    <li><a href="#writing">Writing</a></li>
+                    <li><a href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">CV<span class="vh"> (PDF)</span></a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <div class="layout">
-        <!-- ===== Left: sticky identity ===== -->
-        <aside class="identity">
-            <h1>Mike Kostenko</h1>
-            <p class="role">Java Software Engineer</p>
-            <p class="tagline">Backend &amp; desktop Java for a large-scale fintech trading platform.</p>
+    <main id="main">
+        <section class="hero container" aria-labelledby="name">
+            <h1 id="name">Mike Kostenko</h1>
+            <p class="intro">Java engineer in Porto. I build trading software at Devexperts and run a few small systems of my own.</p>
 
-            <ul class="facts">
-                <li><strong>8 yrs</strong><span>at Devexperts</span></li>
-                <li><strong>OCP 21</strong><span>Java SE certified</span></li>
-            </ul>
+            <div class="now" id="now">
+                <!-- Static fallback (no JS, failed fetch, nothing publishable). scripts/live.js replaces it with live figures. -->
+                <p class="now-text" id="now-text"><span class="label">Right now:</span> Prazo is sending Telegram reminders about Portuguese deadlines from a Raspberry Pi, and the PNCT map is online at <a href="https://pnct.singledev.eu">pnct.singledev.eu</a>.</p>
+                <p class="now-meta" id="now-meta" data-state="none" aria-live="polite"><span class="dot" aria-hidden="true"></span><span id="now-when">no live figures yet</span></p>
+            </div>
+        </section>
 
-            <ul class="contacts">
-                <li>
-                    <a href="mailto:contact@singledev.eu">
-                        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v8H2z M2 4l6 5 6-5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
-                        contact@singledev.eu
-                    </a>
-                </li>
-                <li>
-                    <a href="https://github.com/vopros21" target="_blank" rel="noopener">
-                        <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-                        vopros21
-                    </a>
-                </li>
-                <li>
-                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 15s5-4.6 5-8.5A5 5 0 0 0 3 6.5C3 10.4 8 15 8 15z" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="6.5" r="1.8" fill="currentColor"/></svg>
-                    Porto, Portugal
-                </li>
-                <li>
-                    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M1.8 8h12.4M8 1.7c2 2.2 2 10.4 0 12.6M8 1.7c-2 2.2-2 10.4 0 12.6" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
-                    English C1 · Portuguese A2
-                </li>
-            </ul>
-
-        </aside>
-
-        <!-- ===== Right: content ===== -->
-        <main class="content">
-
-            <section id="about" class="panel glass">
-                <h2>About</h2>
-                <p>I work on <strong>TOS</strong>, a large-scale Java/Swing fintech trading platform at Devexperts, where I've spent 8 years: 4+ in QA, then development. My strengths are backend and desktop Java (Java 21, Spring, PostgreSQL), fast and reliable tests, and thorough code review — my QA background keeps me quality-minded. I'm looking for a <strong>senior Java role</strong>, remote within the EU, where I can grow towards architecture.</p>
-            </section>
-
-            <section id="experience">
-                <h2 class="section-title">Experience</h2>
-
-                <article class="job panel glass">
-                    <div class="job-when">Jan 2023 – Present</div>
-                    <div class="job-body">
-                        <h3>Java Developer <span class="at">· <a href="https://devexperts.com" target="_blank" rel="noopener">Devexperts</a></span></h3>
-                        <p class="lead">Developing and maintaining modules of a large-scale fintech platform across the lifecycle, from requirements to deployment.</p>
-                        <ul class="wins">
-                            <li><span class="stat">-83%</span> Cut unit test suite runtime by 83% by introducing concurrent test execution (Java concurrency, JUnit).</li>
-                            <li>Documented the troubleshooting process in the main unit test area so that each team member could perform it efficiently and effectively.</li>
-                            <li>Extended the corporate-actions pipeline (dividends, splits) to persist data in the database via a new DAO layer, following the legacy codebase's patterns and Spring wiring.</li>
-                            <li>Added unit tests for candle subscription-symbol logic (CandlePrice/CandleAlignment) edge cases.</li>
-                        </ul>
-                        <ul class="duties">
-                            <li>Analyse and implement technical requirements for backlog tasks, estimating scope and duration based on size and complexity.</li>
-                            <li>Implement code logic and provide the QA team with functional context on code changes to support effective testing.</li>
-                            <li>Review team pull requests, focusing on code quality, performance, and maintainability.</li>
-                            <li>Provide deployment support to ensure highest product quality.</li>
-                        </ul>
-                        <div class="subblock">
-                            <h4>Internal platform: <a href="projects/parking.html">Parking Service</a> <span class="when">| 2025 – Present</span></h4>
-                            <ul class="duties">
-                                <li>Designed, built and operate the office parking booking system used by ~80 employees (~100 bookings/week): half-day slots, waitlist queue, Slack notifications, admin audit log.</li>
-                                <li>Migrated it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL; set up automated daily backups, off-site copies and a tested restore procedure.</li>
-                                <li>Introduced spec-driven, AI-assisted development (Kiro): requirements, design and task breakdown, with characterization tests before refactoring core booking logic.</li>
-                            </ul>
-                        </div>
-                        <ul class="chips">
-                            <li>Java</li><li>Swing</li><li>Spring</li><li>JUnit</li><li>Mockito</li><li>Gradle</li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="job panel glass">
-                    <div class="job-when">Aug 2018 – Dec 2022</div>
-                    <div class="job-body">
-                        <h3>QA Engineer <span class="at">· <a href="https://devexperts.com" target="_blank" rel="noopener">Devexperts</a></span></h3>
-                        <p class="lead">Ensuring quality and reliability of a complex fintech platform through structured testing and cross-team collaboration.</p>
-                        <ul class="wins">
-                            <li><span class="stat">+15%</span> Increased test coverage by 15% through automated tests (Python, Bash), significantly reducing manual effort.</li>
-                            <li>Key contributor in a team that met all critical deadlines for product launches.</li>
-                        </ul>
-                        <ul class="duties">
-                            <li>Analysed and developed documentation: business/technical requirements, test cases and scenarios.</li>
-                            <li>Collaborated with the QA automation team to adapt test cases, validate automated tests, and interpret results against functional requirements.</li>
-                            <li>Executed functional testing for new features and regression testing cycles.</li>
-                            <li>Developed Bash and Python scripts to automate routine QA tasks.</li>
-                        </ul>
-                        <ul class="chips">
-                            <li>Bash</li><li>Python</li><li>JIRA</li><li>Splunk</li>
-                        </ul>
-                    </div>
-                </article>
-            </section>
-
-            <section id="projects">
-                <h2 class="section-title">Projects</h2>
-                <div class="cards">
-                    <a class="card panel glass" href="projects/prazo.html">
-                        <span class="card-meta">Telegram bot · 2026 – present</span>
-                        <h3>Prazo <span class="arrow" aria-hidden="true">→</span></h3>
-                        <p>Telegram bot that reminds people in Portugal of official deadlines: car tax (IUC), inspection (IPO), property tax (IMI), IRS and e-fatura.</p>
-                        <ul class="chips"><li>Java 21</li><li>Spring Boot</li><li>PostgreSQL</li><li>Flyway</li><li>Telegram Bot API</li><li>Raspberry Pi</li></ul>
-                    </a>
-                    <a class="card panel glass" href="projects/pnct.html">
-                        <span class="card-meta">Web app · 2026 – present</span>
-                        <h3>PNCT Territories Map <span class="arrow" aria-hidden="true">→</span></h3>
-                        <p>Interactive map of Portugal's PNCT-eligible territories, with Idealista property-search links for each area.</p>
-                        <ul class="chips"><li>TypeScript</li><li>MapLibre GL</li><li>Vite</li><li>Python</li><li>Playwright</li><li>Cloudflare Pages</li></ul>
-                    </a>
-                    <a class="card panel glass" href="projects/parking.html">
-                        <span class="card-meta">Web app · 2025 – present</span>
-                        <h3>Parking Service <span class="arrow" aria-hidden="true">→</span></h3>
-                        <p>Office parking booking with half-day slots, a waitlist queue and Slack notifications.</p>
-                        <ul class="chips"><li>Node.js</li><li>Fastify</li><li>React</li><li>Vite</li><li>PostgreSQL</li><li>Ubuntu VM</li></ul>
-                    </a>
-                    <a class="card panel glass" href="projects/hubithab.html">
-                        <span class="card-meta">iOS app · 2024 – present</span>
-                        <h3>HubitHab <span class="arrow" aria-hidden="true">→</span></h3>
-                        <p>Automatic habit tracker: pulls activity from GitHub, LeetCode, HealthKit and X — no manual logging.</p>
-                        <ul class="chips"><li>Swift</li><li>SwiftUI</li><li>HealthKit</li><li>Spring Boot</li></ul>
-                    </a>
+        <section class="section" id="systems" aria-labelledby="systems-title">
+            <div class="container">
+                <div class="section-head">
+                    <h2 id="systems-title">Systems I run</h2>
+                    <p>Small products I designed, built and keep running: deploys, backups, upgrades and fixes.</p>
                 </div>
-            </section>
+                <table class="systems">
+                    <thead>
+                        <tr><th scope="col">System</th><th scope="col">What it is</th><th scope="col">Since</th><th scope="col">Built with, runs on</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr data-system="prazo">
+                            <th scope="row"><a href="projects/prazo.html">Prazo</a></th>
+                            <td class="what">Telegram bot that reminds people in Portugal of official deadlines: car tax, inspection, property tax, IRS and e-fatura.<span class="status">Running</span></td>
+                            <td class="since">since 2026</td>
+                            <td class="stack">Java 21, Spring Boot, PostgreSQL, Flyway. Runs on a Raspberry Pi.</td>
+                        </tr>
+                        <tr data-system="pnct">
+                            <th scope="row"><a href="projects/pnct.html">PNCT map</a></th>
+                            <td class="what">Interactive map of the Portuguese territories eligible for the PNCT programme, with property-search links for each area.<span class="status">Running</span></td>
+                            <td class="since">since 2026</td>
+                            <td class="stack">TypeScript, MapLibre GL, a Python data pipeline. Runs on Cloudflare Pages.</td>
+                        </tr>
+                        <tr data-system="parking">
+                            <th scope="row"><a href="projects/parking.html">Parking Service</a></th>
+                            <td class="what">Office parking booking for about 80 colleagues, with half-day slots, a waitlist and Slack notifications.<span class="status">Running</span></td>
+                            <td class="since">since 2025</td>
+                            <td class="stack">Node.js, Fastify, React, PostgreSQL. Runs on a self-hosted Ubuntu VM.</td>
+                        </tr>
+                        <tr data-system="hubithab">
+                            <th scope="row"><a href="projects/hubithab.html">HubitHab</a></th>
+                            <td class="what">iOS habit tracker that fills itself in from GitHub, LeetCode, HealthKit and X, with no manual logging.<span class="status">In development</span></td>
+                            <td class="since">since 2024</td>
+                            <td class="stack">Swift, SwiftUI, HealthKit, a Spring Boot proxy.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <section id="skills" class="panel glass">
-                <h2>Skills</h2>
-                <dl class="skills">
-                    <dt>Languages<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li class="hi">Java (21)<span class="vh">, </span></li><li>Swift<span class="vh">, </span></li><li>Groovy<span class="vh">, </span></li><li>Bash<span class="vh">, </span></li><li>Python<span class="vh">, </span></li><li>TypeScript</li></ul></dd>
-                    <dt>Frameworks<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li class="hi">Spring<span class="vh">, </span></li><li class="hi">Spring Boot<span class="vh">, </span></li><li>REST APIs<span class="vh">, </span></li><li>Swing<span class="vh">, </span></li><li>SwiftUI<span class="vh">, </span></li><li>picocli</li></ul></dd>
-                    <dt>Web<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li>Node.js<span class="vh">, </span></li><li>Fastify<span class="vh">, </span></li><li>React<span class="vh">, </span></li><li>MapLibre GL</li></ul></dd>
-                    <dt>Databases<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li>SQL<span class="vh">, </span></li><li>Oracle SQL<span class="vh">, </span></li><li>PostgreSQL<span class="vh">, </span></li><li>MySQL<span class="vh">, </span></li><li>SQLite<span class="vh">, </span></li><li>Liquibase</li></ul></dd>
-                    <dt>Testing<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li>JUnit 5<span class="vh">, </span></li><li>Mockito<span class="vh">, </span></li><li>TDD</li></ul></dd>
-                    <dt>Tools<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li>Git<span class="vh">, </span></li><li>Maven<span class="vh">, </span></li><li>Gradle<span class="vh">, </span></li><li>Continuous Integration/Delivery (CI/CD)<span class="vh">, </span></li><li>GitHub Actions<span class="vh">, </span></li><li>Linux<span class="vh">, </span></li><li>JIRA<span class="vh">, </span></li><li>Splunk<span class="vh">, </span></li><li>IntelliJ IDEA<span class="vh">, </span></li><li>Xcode<span class="vh">, </span></li><li>VS Code</li></ul></dd>
-                    <dt>Practices<span class="vh">: </span></dt>
-                    <dd><ul class="chips"><li>Agile/Scrum<span class="vh">, </span></li><li>Code review</li></ul></dd>
+        <section class="section" id="work" aria-labelledby="work-title">
+            <div class="container">
+                <div class="section-head">
+                    <h2 id="work-title">Work</h2>
+                    <p>Eight years at Devexperts on TOS, a large Java and Swing trading platform: four in QA, then development. I'm looking for a senior Java role, remote within the EU, with room to grow into architecture.</p>
+                </div>
+
+                <ol class="timeline">
+                    <li class="entry">
+                        <p class="when">Jan 2023 to present</p>
+                        <div>
+                            <h3>Java developer <span class="org">at <a href="https://devexperts.com" rel="noopener">Devexperts</a></span></h3>
+                            <p class="lead">I develop and maintain modules of the platform across the whole lifecycle, from requirements to deployment.</p>
+                            <ul class="list">
+                                <li>Cut the unit test suite's runtime by 83% by running tests concurrently (Java concurrency, JUnit).</li>
+                                <li>Documented the troubleshooting process for the main unit test area, so anyone on the team can run it.</li>
+                                <li>Extended the corporate-actions pipeline (dividends, splits) to persist data through a new DAO layer, following the legacy code's patterns and Spring wiring.</li>
+                                <li>Added unit tests for edge cases in the candle subscription-symbol logic (CandlePrice, CandleAlignment).</li>
+                                <li>Analyse and estimate backlog tasks, give QA the functional context of each change, review the team's pull requests for quality, performance and maintainability, and support deployments.</li>
+                            </ul>
+
+                            <h4><a href="projects/parking.html">Parking Service</a> <span class="org">internal platform, 2025 to present</span></h4>
+                            <ul class="list">
+                                <li>Designed, built and operate the office parking booking system: about 80 employees and 100 bookings a week, with half-day slots, a waitlist, Slack notifications and an admin audit log.</li>
+                                <li>Moved it from managed cloud hosting to a self-hosted company Linux VM with PostgreSQL, with automated daily backups, off-site copies and a tested restore procedure.</li>
+                                <li>Introduced spec-driven, AI-assisted development (Kiro): requirements, design and task breakdown, with characterization tests before refactoring the core booking logic.</li>
+                            </ul>
+                            <p class="used">Java, Swing, Spring, JUnit, Mockito, Gradle</p>
+                        </div>
+                    </li>
+                    <li class="entry">
+                        <p class="when">Aug 2018 to Dec 2022</p>
+                        <div>
+                            <h3>QA engineer <span class="org">at <a href="https://devexperts.com" rel="noopener">Devexperts</a></span></h3>
+                            <p class="lead">I tested a complex fintech platform through structured testing and work with other teams.</p>
+                            <ul class="list">
+                                <li>Raised test coverage by 15% with automated tests in Python and Bash, which cut a lot of manual work.</li>
+                                <li>Was a key contributor in a team that met every critical deadline for product launches.</li>
+                                <li>Wrote business and technical requirements, test cases and scenarios; ran functional and regression testing.</li>
+                                <li>Worked with the QA automation team to adapt test cases, validate automated tests and read results against the requirements.</li>
+                            </ul>
+                            <p class="used">Bash, Python, JIRA, Splunk</p>
+                        </div>
+                    </li>
+                </ol>
+
+                <h3 class="sub-head">Skills</h3>
+                <dl class="rows">
+                    <dt>Languages</dt><dd>Java 21, Swift, Groovy, Bash, Python, TypeScript</dd>
+                    <dt>Frameworks</dt><dd>Spring, Spring Boot, REST APIs, Swing, SwiftUI, picocli</dd>
+                    <dt>Web</dt><dd>Node.js, Fastify, React, MapLibre GL</dd>
+                    <dt>Databases</dt><dd>SQL, Oracle SQL, PostgreSQL, MySQL, SQLite, Liquibase</dd>
+                    <dt>Testing</dt><dd>JUnit 5, Mockito, TDD</dd>
+                    <dt>Tools</dt><dd>Git, Maven, Gradle, CI/CD, GitHub Actions, Linux, JIRA, Splunk, IntelliJ IDEA, Xcode, VS Code</dd>
+                    <dt>Practices</dt><dd>Agile and Scrum, code review</dd>
                 </dl>
-            </section>
+            </div>
+        </section>
 
-            <section id="education" class="panel glass">
-                <h2>Education &amp; Certificates</h2>
-                <ul class="edu">
-                    <li class="featured">
-                        <span class="edu-when">Sep 2025</span>
-                        <div><strong>Oracle Certified Professional (OCP): Java SE 21 Developer</strong><span class="muted">Oracle</span></div>
-                    </li>
-                    <li>
-                        <span class="edu-when">Course</span>
-                        <div><strong>GitHub Actions</strong><a href="https://learn.microsoft.com/en-us/collections/n5p4a5z7keznp5" target="_blank" rel="noopener">Microsoft Learn</a></div>
-                    </li>
-                    <li>
-                        <span class="edu-when">Course</span>
-                        <div><strong>GitHub Foundations</strong><a href="https://learn.microsoft.com/en-us/collections/o1njfe825p602p" target="_blank" rel="noopener">Microsoft Learn</a></div>
-                    </li>
-                    <li>
-                        <span class="edu-when">Course</span>
-                        <div><strong>100 Days of SwiftUI</strong><a href="https://www.hackingwithswift.com/100/swiftui" target="_blank" rel="noopener">Hacking with Swift</a></div>
-                    </li>
-                    <li>
-                        <span class="edu-when">Degree</span>
-                        <div><strong>Master's degree</strong><span class="muted">Rostov State University of Transport Communication</span></div>
-                    </li>
-                </ul>
-                <a class="more" href="timeline/index.html">All certificates →</a>
-            </section>
+        <section class="section" id="writing" aria-labelledby="writing-title">
+            <div class="container">
+                <div class="section-head">
+                    <h2 id="writing-title">Writing</h2>
+                </div>
+<!-- writing:start (generated by blog/build.mjs) -->
+                <p class="empty">Nothing published yet. New posts will show up here and in the <a href="blog/feed.xml">RSS feed</a>.</p>
+<!-- writing:end -->
+            </div>
+        </section>
 
-            <footer class="foot">© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="cv.md">Plain-text CV</a> · <a href="blog/">Blog</a></footer>
-        </main>
-    </div>
+        <section class="section" id="certificates" aria-labelledby="cert-title">
+            <div class="container">
+                <div class="section-head">
+                    <h2 id="cert-title">Certificates and education</h2>
+                </div>
+                <dl class="rows">
+                    <dt>Sep 2025</dt><dd>Oracle Certified Professional: Java SE 21 Developer <span class="muted">from Oracle</span></dd>
+                    <dt>Course</dt><dd><a href="https://learn.microsoft.com/en-us/collections/n5p4a5z7keznp5" rel="noopener">GitHub Actions</a> <span class="muted">on Microsoft Learn</span></dd>
+                    <dt>Course</dt><dd><a href="https://learn.microsoft.com/en-us/collections/o1njfe825p602p" rel="noopener">GitHub Foundations</a> <span class="muted">on Microsoft Learn</span></dd>
+                    <dt>Course</dt><dd><a href="https://www.hackingwithswift.com/100/swiftui" rel="noopener">100 Days of SwiftUI</a> <span class="muted">from Hacking with Swift</span></dd>
+                    <dt>Degree</dt><dd>Master's degree <span class="muted">from Rostov State University of Transport Communication</span></dd>
+                </dl>
+                <p class="more"><a href="timeline/">All certificates, with previews</a></p>
+            </div>
+        </section>
 
-    <script src="scripts/nav.js"></script>
+        <section class="section" id="contact" aria-labelledby="contact-title">
+            <div class="container">
+                <div class="section-head">
+                    <h2 id="contact-title">Contact</h2>
+                </div>
+                <dl class="rows">
+                    <dt>Email</dt><dd><a href="mailto:contact@singledev.eu">contact@singledev.eu</a></dd>
+                    <dt>GitHub</dt><dd><a href="https://github.com/vopros21" rel="noopener">vopros21</a></dd>
+                    <dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/mike-kostenko" rel="noopener">mike-kostenko</a></dd>
+                    <dt>Based in</dt><dd>Porto, Portugal</dd>
+                    <dt>Languages</dt><dd>English (C1), Portuguese (A2)</dd>
+                </dl>
+            </div>
+        </section>
+    </main>
+
+    <footer class="foot">
+        <div class="container">
+            <p>© 2023–2026 Mike Kostenko. <a href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">CV as PDF</a>, <a href="cv.md">plain-text CV</a>, <a href="blog/feed.xml">RSS</a>.</p>
+        </div>
+    </footer>
+
+    <script src="scripts/live.js" defer></script>
 </body>
 
 </html>

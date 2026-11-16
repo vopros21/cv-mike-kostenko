@@ -14,28 +14,40 @@
     <meta property="og:image" content="https://singledev.eu/images/og.png">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="alternate" type="application/rss+xml" title="Mike Kostenko — Blog" href="https://singledev.eu/blog/feed.xml">
+    <link rel="preload" href="../fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 
 <body>
-    <header class="topbar glass">
-        <a href="../index.html" class="monogram">MK</a>
-        <span style="flex:1"></span>
-        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
-    </header>
-    <main>
-        <div class="cv-card">
-            <section>
-                <a href="../index.html" class="back-link">← Home</a>
-                <h1 class="blog-title">Blog</h1>
-                <p class="subtitle">Software engineering and life. <a href="feed.xml">RSS feed</a></p>
-            <p class="post-empty">No posts yet. Check back soon, or subscribe to the <a href="feed.xml">RSS feed</a>.</p>
-            </section>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+        <div class="container">
+            <a class="home" href="../">Mike Kostenko</a>
+            <nav aria-label="Main">
+                <ul>
+                    <li><a href="../#work">Work</a></li>
+                    <li><a href="../#systems">Systems</a></li>
+                    <li><a href="./" aria-current="true">Writing</a></li>
+                    <li><a href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">CV<span class="vh"> (PDF)</span></a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
+
+    <main id="main" class="page container">
+        <header class="page-head">
+            <h1>Writing</h1>
+            <p class="sub">Notes on software engineering and life in Porto.</p>
+            <p class="meta">Also as an <a href="feed.xml">RSS feed</a>.</p>
+        </header>
+        <p class="empty">Nothing published yet. New posts will show up here and in the <a href="feed.xml">RSS feed</a>.</p>
     </main>
-    <footer>
-        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="index.html">Blog</a></p>
+
+    <footer class="foot">
+        <div class="container">
+            <p>© 2023–2026 Mike Kostenko. <a href="mailto:contact@singledev.eu">contact@singledev.eu</a>, <a href="feed.xml">RSS</a>.</p>
+        </div>
     </footer>
 </body>
 

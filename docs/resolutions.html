@@ -10,18 +10,26 @@
 </head>
 
 <body>
-    <header class="topbar glass">
-        <a href="index.html" class="monogram">MK</a>
-        <span style="flex:1"></span>
-        <a id="pdf-button" href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+        <div class="container">
+            <a class="home" href="./">Mike Kostenko</a>
+            <nav aria-label="Main">
+                <ul>
+                    <li><a href="./#work">Work</a></li>
+                    <li><a href="./#systems">Systems</a></li>
+                    <li><a href="blog/">Writing</a></li>
+                    <li><a href="cv.pdf" download="CV_Kostenko_Java_Dev.pdf">CV<span class="vh"> (PDF)</span></a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <main>
-        <div class="cv-card">
-            <section>
-                <a href="index.html" style="font-size: 0.9rem;">← Back</a>
-                <h1 style="margin-top: 16px;">New Year Resolutions <span class="current-year"></span></h1>
-                <p class="subtitle">Tick them off as they happen.</p>
-
+    <main id="main" class="page container">
+        <header class="page-head">
+            <h1>New Year resolutions <span class="current-year"></span></h1>
+            <p class="sub">Tick them off as they happen.</p>
+        </header>
+        <section class="body">
                 <h2>Goals</h2>
                 <form id="checkboxForm" class="resolutions">
                     <label for="option1"><input type="checkbox" id="option1" name="option1"> Marathon under 3:30</label>
@@ -31,17 +39,18 @@
                     <label for="option5"><input type="checkbox" id="option5" name="option5"> Reduce debt: 203,845.66/203,075.12</label>
                     <label for="option6"><input type="checkbox" id="option6" name="option6"> Get fitter to 70kg (80 now)</label>
                 </form>
-            </section>
-        </div>
+        </section>
     </main>
-    <footer>
-        <p>© 2023–<span class="current-year"></span> Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+    <footer class="foot">
+        <div class="container">
+            <p>© 2023–<span class="current-year"></span> Mike Kostenko. <a href="mailto:contact@singledev.eu">contact@singledev.eu</a></p>
+        </div>
     </footer>
 
     <script>
         const year = new Date().getFullYear();
         document.querySelectorAll('.current-year').forEach(el => { el.textContent = year; });
-        document.title = `New Year Resolutions ${year} — Mike Kostenko`;
+        document.title = `New Year resolutions ${year} — Mike Kostenko`;
 
         // Checkbox state persists per browser in localStorage
         const checkboxes = document.querySelectorAll('#checkboxForm input[type="checkbox"]');

@@ -1,0 +1,67 @@
+{
+  "generatedAt": null,
+  "metrics": [
+    {
+      "id": "prazo_active_users",
+      "system": "prazo",
+      "value": null,
+      "sentence": "Prazo is reminding {value} people about Portuguese deadlines.",
+      "asOf": null,
+      "public": true
+    },
+    {
+      "id": "pnct_visitors_month",
+      "system": "pnct",
+      "value": null,
+      "sentence": "pnct.singledev.eu had {value} visitors in {month}.",
+      "asOf": null,
+      "public": true
+    },
+    {
+      "id": "uptime_30d",
+      "system": null,
+      "value": null,
+      "sentence": "Over the last 30 days, {value}% of health checks on my public systems passed.",
+      "asOf": null,
+      "public": true
+    },
+    {
+      "id": "parking_active_users",
+      "system": "parking",
+      "value": null,
+      "sentence": "The office parking service has {value} active users.",
+      "asOf": null,
+      "public": false
+    },
+    {
+      "id": "parking_bookings_week",
+      "system": "parking",
+      "value": null,
+      "sentence": "The office parking service took {value} bookings last week.",
+      "asOf": null,
+      "public": false
+    }
+  ],
+  "systems": [
+    {
+      "id": "prazo",
+      "status": "running",
+      "checkedAt": null
+    },
+    {
+      "id": "pnct",
+      "status": "running",
+      "checkedAt": null
+    },
+    {
+      "id": "parking",
+      "status": "running",
+      "checkedAt": null
+    },
+    {
+      "id": "hubithab",
+      "status": "development",
+      "checkedAt": null
+    }
+  ]
+}

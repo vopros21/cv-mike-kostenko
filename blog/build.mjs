@@ -2,7 +2,8 @@
 // Usage: cd blog && npm i && npm run build
 //
 // docs/blog/ is regenerated from scratch on every build. Outside it, only the
-// <!-- blog:start --> ... <!-- blog:end --> section of docs/llms.txt is touched.
+// <!-- blog:start --> ... <!-- blog:end --> section of docs/llms.txt and the
+// <!-- writing:start ... --> ... <!-- writing:end --> block of docs/index.html are touched.
 // Output is deterministic (no build timestamps), so rebuilding without changes gives no diff.
 import { readdir, readFile, writeFile, mkdir, rm, cp, stat } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -16,6 +17,7 @@ const IMAGES_DIR = path.join(POSTS_DIR, 'images');
 const DOCS = path.join(here, '..', 'docs');
 const OUT = path.join(DOCS, 'blog');
 const LLMS = path.join(DOCS, 'llms.txt');
+const HOME = path.join(DOCS, 'index.html');
 
 const SITE = 'https://singledev.eu';
 const BLOG_URL = `${SITE}/blog/`;
@@ -120,7 +122,7 @@ async function imageRefs(post) {
   return [...refs];
 }
 
-// ---------- page shell (same as docs/projects/parking.html) ----------
+// ---------- page shell (same as docs/projects/*.html) ----------
 function shell({ title, description, canonical, ogType, body }) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -138,23 +140,35 @@ function shell({ title, description, canonical, ogType, body }) {
     <meta property="og:image" content="${OG_IMAGE}">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="alternate" type="application/rss+xml" title="Mike Kostenko — Blog" href="${BLOG_URL}feed.xml">
+    <link rel="preload" href="../fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="../styles.css">
     <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 
 <body>
-    <header class="topbar glass">
-        <a href="../index.html" class="monogram">MK</a>
-        <span style="flex:1"></span>
-        <a id="pdf-button" href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">Download CV</a>
-    </header>
-    <main>
-        <div class="cv-card">
-${body}
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="topbar">
+        <div class="container">
+            <a class="home" href="../">Mike Kostenko</a>
+            <nav aria-label="Main">
+                <ul>
+                    <li><a href="../#work">Work</a></li>
+                    <li><a href="../#systems">Systems</a></li>
+                    <li><a href="./" aria-current="true">Writing</a></li>
+                    <li><a href="../cv.pdf" download="CV_Kostenko_Java_Dev.pdf">CV<span class="vh"> (PDF)</span></a></li>
+                </ul>
+            </nav>
         </div>
+    </header>
+
+    <main id="main" class="page container">
+${body}
     </main>
-    <footer>
-        <p>© 2023–2026 Mike Kostenko · <a href="mailto:contact@singledev.eu">contact@singledev.eu</a> · <a href="index.html">Blog</a></p>
+
+    <footer class="foot">
+        <div class="container">
+            <p>© 2023–2026 Mike Kostenko. <a href="mailto:contact@singledev.eu">contact@singledev.eu</a>, <a href="feed.xml">RSS</a>.</p>
+        </div>
     </footer>
 </body>
 
@@ -162,53 +176,82 @@ ${body}
 `;
 }
 
-const categoryChip = c => c ? `<span class="cat cat-${c}">${escapeHtml(c)}</span>` : '';
+// "1 Oct 2026, tech, 3 min read" (no middle-dot strings)
+const metaLine = (p, extra = []) => [
+  `<time datetime="${p.date}">${formatDate(p.date)}</time>`,
+  ...(p.category ? [escapeHtml(p.category)] : []),
+  ...extra,
+].join(', ');
+
+const EMPTY = 'Nothing published yet. New posts will show up here and in the <a href="feed.xml">RSS feed</a>.';
 
 function indexPage(posts) {
-  const items = posts.map(p => `                <li class="post-item">
-                    <h2><a href="${p.slug}.html">${escapeHtml(p.title)}</a></h2>
-                    <p class="post-meta"><time datetime="${p.date}">${formatDate(p.date)}</time>${p.category ? ` ${categoryChip(p.category)}` : ''}</p>
-                    <p class="post-summary">${escapeHtml(p.summary)}</p>
-                </li>`).join('\n');
+  const items = posts.map(p => `            <li>
+                <h2><a href="${p.slug}.html">${escapeHtml(p.title)}</a></h2>
+                <p class="meta">${metaLine(p)}</p>
+                <p class="summary">${escapeHtml(p.summary)}</p>
+            </li>`).join('\n');
   const list = posts.length
-    ? `            <ul class="post-list">\n${items}\n            </ul>`
-    : `            <p class="post-empty">No posts yet. Check back soon, or subscribe to the <a href="feed.xml">RSS feed</a>.</p>`;
+    ? `        <ul class="post-list">\n${items}\n        </ul>`
+    : `        <p class="empty">${EMPTY}</p>`;
   return shell({
     title: 'Blog — Mike Kostenko',
     description: 'Posts by Mike Kostenko, Java Software Engineer in Porto: software engineering and life.',
     canonical: BLOG_URL,
     ogType: 'website',
-    body: `            <section>
-                <a href="../index.html" class="back-link">← Home</a>
-                <h1 class="blog-title">Blog</h1>
-                <p class="subtitle">Software engineering and life. <a href="feed.xml">RSS feed</a></p>
-${list}
-            </section>`,
+    body: `        <header class="page-head">
+            <h1>Writing</h1>
+            <p class="sub">Notes on software engineering and life in Porto.</p>
+            <p class="meta">Also as an <a href="feed.xml">RSS feed</a>.</p>
+        </header>
+${list}`,
   });
 }
 
 function postPage(post, newer, older) {
   const nav = [
-    older ? `<a class="older" href="${older.slug}.html"><span>← Older</span>${escapeHtml(older.title)}</a>` : '',
-    newer ? `<a class="newer" href="${newer.slug}.html"><span>Newer →</span>${escapeHtml(newer.title)}</a>` : '',
-  ].filter(Boolean).join('\n                ');
+    older ? `<a class="older" href="${older.slug}.html"><span class="k">Older post</span><span class="t">${escapeHtml(older.title)}</span></a>` : '',
+    newer ? `<a class="newer" href="${newer.slug}.html"><span class="k">Newer post</span><span class="t">${escapeHtml(newer.title)}</span></a>` : '',
+  ].filter(Boolean).join('\n            ');
   return shell({
     title: `${post.title} — Mike Kostenko`,
     description: post.summary,
     canonical: `${BLOG_URL}${post.slug}.html`,
     ogType: 'article',
-    body: `            <a href="index.html" class="back-link">← All posts</a>
-            <header class="post-header">
-                <h1>${escapeHtml(post.title)}</h1>
-                <p class="post-meta"><time datetime="${post.date}">${formatDate(post.date)}</time>${post.category ? ` ${categoryChip(post.category)}` : ''} <span class="read-time">· ${readingTime(post.body)} min read</span></p>
-            </header>
-            <article class="prose">
+    body: `        <header class="page-head">
+            <p class="crumb"><a href="./">Writing</a></p>
+            <h1>${escapeHtml(post.title)}</h1>
+            <p class="meta">${metaLine(post, [`${readingTime(post.body)} min read`])}</p>
+        </header>
+        <article class="prose">
 ${post.html}
-            </article>${nav ? `
-            <nav class="post-nav" aria-label="More posts">
-                ${nav}
-            </nav>` : ''}`,
+        </article>${nav ? `
+        <nav class="post-nav" aria-label="More posts">
+            ${nav}
+        </nav>` : ''}`,
   });
+}
+
+// Latest posts on the homepage, between the writing markers in docs/index.html.
+async function updateHomepage(posts) {
+  const START = '<!-- writing:start (generated by blog/build.mjs) -->', END = '<!-- writing:end -->';
+  let html = await readFile(HOME, 'utf8');
+  if (!html.includes(START) || !html.includes(END)) fail('docs/index.html: writing markers not found');
+  const latest = posts.slice(0, 3);
+  const block = latest.length
+    ? `                <ul class="posts">
+${latest.map(p => `                    <li>
+                        <time datetime="${p.date}">${formatDate(p.date)}</time>
+                        <div>
+                            <h3><a href="blog/${p.slug}.html">${escapeHtml(p.title)}</a></h3>
+                            <p>${escapeHtml(p.summary)}</p>
+                        </div>
+                    </li>`).join('\n')}
+                </ul>
+                <p class="more"><a href="blog/">All writing</a></p>`
+    : `                <p class="empty">${EMPTY.replace('href="feed.xml"', 'href="blog/feed.xml"')}</p>`;
+  html = html.slice(0, html.indexOf(START) + START.length) + `\n${block}\n` + html.slice(html.indexOf(END));
+  await writeFile(HOME, html);
 }
 
 const postMarkdown = p => `# ${p.title}\n\n${formatDate(p.date)}\n\n${p.body.trim()}\n`;
@@ -274,6 +317,7 @@ try {
   }
   await writeFile(path.join(OUT, 'feed.xml'), feed(posts));
   await updateLlms(posts);
+  await updateHomepage(posts);
 
   console.log(`docs/blog/ written: ${posts.length} post(s)${posts.length ? ' — ' + posts.map(p => p.slug).join(', ') : ''}, ${images.length} image(s)`);
 } catch (e) {
