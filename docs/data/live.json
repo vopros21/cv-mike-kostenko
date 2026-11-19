@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-18T00:05:36.375Z",
+  "generatedAt": "2026-11-19T00:06:36.495Z",
   "metrics": [
     {
       "id": "prazo_active_users",
@@ -7,7 +7,7 @@
       "value": 1,
       "sentence": "Prazo is reminding {value} people about Portuguese deadlines.",
       "sentenceOne": "Prazo is reminding {value} person about Portuguese deadlines.",
-      "asOf": "2026-11-18T00:05:36.375Z",
+      "asOf": "2026-11-19T00:06:36.495Z",
       "public": true,
       "minPublic": 10
     },
@@ -50,12 +50,12 @@
     {
       "id": "prazo",
       "status": "running",
-      "checkedAt": "2026-11-18T00:05:36.706Z"
+      "checkedAt": "2026-11-19T00:06:36.829Z"
     },
     {
       "id": "pnct",
       "status": "running",
-      "checkedAt": "2026-11-18T00:05:37.018Z"
+      "checkedAt": "2026-11-19T00:06:37.173Z"
     },
     {
       "id": "parking",
